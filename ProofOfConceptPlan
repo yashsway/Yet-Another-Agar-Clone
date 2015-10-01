@@ -1,0 +1,22 @@
+
+\documentclass{article}
+\usepackage{times}
+
+
+\begin{document}
+
+\title{Proof of Concept Demonstration Plan\\
+	\large Agar.io for SE 3XA3}
+\author{Yash Gopal, Vicky Bilbily, and Jemar Jones.}
+\date{October 1, 2015}
+\maketitle
+
+
+\section*{
+	There are many facets to the implementation of Agar.io. For the proof of concept demonstration, we plan to complete, at the very least, a game board on which multiple players can exist and move. We believe that the game mechanics will not be a huge challenge, but that the difficult part of the project that is a significant risk is the multiplayer server.
+}
+\section*{
+	For the implementation of our server we will be using Node.js. Node.js is very easy to install. We will also be installing a testing framework, Mocha.js.
+}
+
+\end{document}
