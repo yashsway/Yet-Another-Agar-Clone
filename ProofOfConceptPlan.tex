@@ -1,22 +1,27 @@
 
-\documentclass{article}
+\documentclass[12pt]{article}
 \usepackage{times}
+\usepackage{titling}
 
-
-\begin{document}
+\setlength{\droptitle}{-10em} 
 
 \title{Proof of Concept Demonstration Plan\\
 	\large Agar.io for SE 3XA3}
 \author{Yash Gopal, Vicky Bilbily, and Jemar Jones.}
 \date{October 1, 2015}
+
+\begin{document}
+
+
 \maketitle
 
 
-
+\section*{Introduction}
 	 There are many facets to the implementation of Agar.io. For the proof of concept demonstration, we plan to complete, at the very least, a game board on which multiple players can exist and move. We believe that the game mechanics will not be a huge challenge, but that the difficult part of the project that is a significant risk is the multiplayer server.
-
-
-	For the implementation of our server we will be using the Node.js javascript runtime enviroment. Setting up Node.js on a local computer is fairly trivial. We also intend to host an instance of our server publicly. We will also be installing a testing framework, Mocha.js. Though we do not foresee any difficulty in using Mocha for unit testing, the more graphical components of our Agar.io implementation may be more challenging to test explicitly.
-
-
+\section*{Installation/Running}
+	For the implementation of our server we will be using the Node.js javascript runtime enviroment. Setting up Node.js on a local computer is fairly trivial. Any packages, frameworks, or libraries used with Node.js are installed using it's built in package manager, npm. Our intention is to include very short instructions on this simple process. We also intend to host an instance of our server publicly. 
+\section*{Testing}
+	We will be using a javascript unit testing framework called Mocha.js. Though we do not foresee any difficulty in using Mocha for unit testing, the more graphical components of our Agar.io implementation may be more challenging to test explicitly.
+\section*{Our plan}
+	As identified, the riskiest component of our implementation will be creating a multiplayer server. As such we intend to focus on this component in our proof of concept demonstration. For this demonstration we intend to create a server which anyone can connect to and appear as a player who can move around the game area using their pointer. Everyone connected to the game, if within site of each other, will be seen in their respective locations by the other connected players. 
 \end{document}
