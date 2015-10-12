@@ -4,6 +4,8 @@
 \usepackage{titling}
 \usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{float}
+\usepackage{longtable}
 
 \setlength{\droptitle}{-10em} 
 
@@ -21,6 +23,7 @@
 
 \section{Project Drivers}
 \subsection{Purpose of the Project}
+\textbf{The User Business or Background of the Project Effort}
 The purpose of Agar.io is to reinvent the way simple multiplayer games work and provide inspiration to the open source game development community. Most multiplayer games nowadays whether they are web-based, desktop, console or mobile, require signups. This is meant to be extremely easy to jump into while still providing a competitive and challenging environment to keep the user engaged and addicted.
 
 The game itself revolves around players starting off as small blobs who can then move around and consume other player blobs to keep increasing in size. Your goal is to be the biggest fish in the pond. However, there’s a catch. The bigger you are, the slower you get and there are plenty of other players on the playing field. The player has to be smart and quick witted to climb the score board.
@@ -29,57 +32,53 @@ The purpose of Agar.io is to reinvent the way simple multiplayer games work and 
 
 The game itself revolves around players starting off as small blobs who can then move around and consume other player blobs to keep increasing in size. Your goal is to be the biggest fish in the pond. However, there’s a catch. The bigger you are, the slower you get and there are plenty of other players on the playing field. The player has to be smart and quick witted to climb the score board.
 \subsection{Users of the Product}
-Hands-On Users
+\textbf{Hands-On Users}
 
 The initial users of the product will be limited to our team and the students enrolled in the 3XA3 course.
 
 Once the project goes live on a public domain, the users will be anyone with access to the website from a Windows, Mac OSX or mobile OS platform like iOS or Android.
 
-All users are assumed to have some experience with games and how they work.
+All users are assumed to have some experience with games and how they work.\\
+\textbf{Priorities Assigned to Users}\\
 
-Priorities Assigned to Users
+\textbf{Key Users:} General Public (Windows, Mac OSX, iOS & Android)
 
-Key Users: General Public (Windows, Mac OSX, iOS & Android) 
-Secondary Users: Professor, Developers and Testers
-
-User Participation
-
-Users playing the game are prompted to use an anonymous name that they can create. No credentials are needed or stored.
-No user data is stored. Every session requires a new name to be created by the user.
+\textbf{Secondary Users:} Professor, Developers and Testers\\\\
+\textbf{User Participation}
+\begin{enumerate}
+\item Users playing the game are prompted to use an anonymous name that they can create. No credentials are needed or stored.
+\item No user data is stored. Every session requires a new name to be created by the user.
+\end{enumerate}
 Maintenance Users and Service Technicians
 
 These are the developers. (Our team)
 \section{Project Constraints}
 \subsection{Mandated Constraints}
-Solution Constraints
+\textbf{Solution Constraints}
 
-The most important mandated constraint is the server. We will be hosting the game on our own server which means the game can only support a certain number of concurrent players before reaching a performance threshold. This also means latency will differ greatly based on where the game is accessed from.
-
-Implementation Environment
+The most important mandated constraint is the server. We will be hosting the game on our own server which means the game can only support a certain number of concurrent players before reaching a performance threshold. This also means latency will differ greatly based on where the game is accessed from.\\
+\textbf{Implementation Environment}
 
 The coding languages used will be web technologies such as HTML5, CSS3 and Javascript.
 Frameworks such as Socket.io, jQuery, Fabric.js, Paper.js, Create.js and Bootstrap will also be utilized.
 Node.js is a javascript runtime environment that will be used along with Socket.io to create the server and host the game.
-The development will utilize code editors such as Brackets or Sublime Text. We will also be using Bash or Windows PowerShell to commit & push and run appropriate documentation tools.
-Partner or Collaborative Applications
+The development will utilize code editors such as Brackets or Sublime Text. We will also be using Bash or Windows PowerShell to commit & push and run appropriate documentation tools.\\
+\textbf{Partner or Collaborative Applications}
 
-not applicable
+not applicable\\
+\textbf{Off-the-shelf Software}
 
-Off-the-shelf Software
+not applicable\\
+\textbf{Anticipated Workplace Environment}
 
-not applicable
-
-Anticipated Workplace Environment
-
-This game will be mostly used at home and on the move.
-
-Schedule Constraints
+This game will be mostly used at home and on the move.\\
+\textbf{Schedule Constraints}
 
 The deadline for the project is around mid-December, which gives our team around 3 months of development time.
 
 Final Demo: Week of November 30th, 2015 
-Final Documentation: December 8th, 2015
-Budget Constraints
+Final Documentation: December 8th, 2015\\
+\textbf{Budget Constraints}
 
 not applicable
 \subsection{Naming Conventions & Terminology}
@@ -105,7 +104,7 @@ The game will only run well on the future-friendly browsers such as Google Chrom
 	modern Windows, OS X, or Linux environment.
 	
 	\textbf{b) The Context of the Work}
-	\begin{figure}[ht!]
+	\begin{figure}[H]
 	\centering
 	\includegraphics[width=90mm]{contextsrs.png}
 	\caption{Context diagram \label{overflow}}
@@ -113,23 +112,61 @@ The game will only run well on the future-friendly browsers such as Google Chrom
 	
 	\textbf{c) Work Partitioning}
 
-    \begin{tabular}{ | l | l | p{2cm} |}
+    \begin{longtable}{ | l | p{3cm}  | p{3cm} |}
     \hline
     Event Name & input/output & Summary \\ \hline
-    1. User Enters game & User ID (IN) User Position + Field state (OUT) & User chooses name and is placed in the live game. \\ \hline
-
-    \end{tabular}
+    1. Player Enters game & Player ID (IN) Player Position (OUT) Player Mass (OUT) Field state (OUT) & Player chooses name and is placed in the live game. \\ \hline
+    2. Player changes position/direction & Player Position (IN) Player Mass (OUT) Field state (OUT) & Player indicates the position/direction they will move in, this is synced with the current Field State. \\ \hline
+    3. Player eats food/another player & Player Position (IN) Player Mass (OUT) Field state (OUT) & Players new position overlaps with smaller food/player, the food/player dissapears and its mass is added to the Player\\ \hline
+    4. Player is eaten & Player Final Score & Player is eaten and is givin info on there final score.\\ \hline
+    \caption{Work Partitioning}
+    \end{longtable}
 \subsection{The Scope of the Product}
-9. Functional and Data Requirements
+\textbf{a) Product Boundary}
 
-a) Functional Requirements
+See Figure 1\\
+\textbf{b) Product Use Case List}
+\begin{figure}[H]
+\centering
+\includegraphics[width=90mm]{SRScase.png}
+\caption{Case diagram \label{overflow}}
+\end{figure}
+
+\textbf{c) Individual Product Use Cases}\newline\\
+1. Product Use Case Name: Enter Game\newline
+Trigger: Player types name and presses play. \newline
+Preconditions: A player is not already in the middle of a game. \newline
+Interested Stakeholders: The player, the client, and the developers. \newline
+Actors: Player, Game Server, Database \newline
+Outcome: If the users name is not already taken, then they are now a player in the currently live game session.\newline\\
+2. Product Use Case Name: Change Position\newline
+Trigger: Player moves pointer in the direction of the new position.\newline
+Preconditions: Player is currently playing the game, is still alive, and there is a position in the direction the player has placed their pointer. \newline
+Interested Stakeholders: The player, the client, and the developers. \newline
+Actors: Player, Game Server, Database \newline
+Outcome: The player is moved to a position an increment of X away in the direction the pointer was placed (relative to their current position).\newline\\
+3. Product Use Case Name: Eat\newline
+Trigger: A players position completely overlaps the position of a smaller food/other player. \newline
+Preconditions: Player is currently playing the game, and is still alive. \newline
+Interested Stakeholders: The player, the client, and the developers. \newline
+Actors: Player, Game Server, Database \newline
+Outcome: The food or other player dissapears and/or dies. The player doing the "eating" has their mass increase by the mass of the food/other player at the time of "eating".\newline\\
+4. Product Use Case Name: Eaten\newline
+Trigger: A players position is completely overlapped by another larger player.\newline
+Preconditions: Player is currently playing the game, and is still alive. \newline
+Interested Stakeholders: The player, the client, and the developers. \newline
+Actors: Player, Game Server, Database \newline
+Outcome: The players screen goes black, they are told theyve died, and there final score/mass is displayed. Afer a brief moment they are allowed to enter the game again if they wish. \newline
+\subsection{Functional and Data Requirements}
+
+\textbf{a) Functional Requirements}
 \medskip 
 
 \fbox{
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 1 \ \ 
 		\textbf{Requirement Type:} 9 \ \ 
-		\textbf{Event/Use case \#:} ? \\
+		\textbf{Event/Use case \#:} 1 \\
 		\textbf{Description:} The game must be accessible online. \\
 		\textbf{Rationale:} It is an online, multiplayer game. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -149,7 +186,7 @@ a) Functional Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 2 \ \ 
 		\textbf{Requirement Type:} 9 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 1 \\
 		\textbf{Description:}  The user must be able to join the online game at any time.\\
 		\textbf{Rationale:}  There is one instance of the game that is ongoing.\\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -169,7 +206,7 @@ a) Functional Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:}  3 \ \ 
 		\textbf{Requirement Type:} 9 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 1 \\
 		\textbf{Description:} 	The user must be able to exit the game at any time. \\
 		\textbf{Rationale:} The user will want to exit eventually. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -188,7 +225,7 @@ a) Functional Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 4 \ \ 
 		\textbf{Requirement Type:} 9 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 2 \\
 		\textbf{Description:} All online players must exist simultaneously on the same game-field. \\
 		\textbf{Rationale:} The game requires players to interact. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -207,7 +244,7 @@ a) Functional Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 5 \ \ 
 		\textbf{Requirement Type:} 9 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 2 \\
 		\textbf{Description:} The user must be able to move their character around the game-field. \\
 		\textbf{Rationale:} It is essential to the objective of the game that characters can move. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -226,7 +263,7 @@ a) Functional Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 6 \ \ 
 		\textbf{Requirement Type:} 9 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 2 \\
 		\textbf{Description:} The user's character must grow in weight but decrease in speed when they collide with objects or players smaller than them, essentially consuming them. \\
 		\textbf{Rationale:} This is the core game-mechanic. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -245,7 +282,7 @@ a) Functional Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 7 \ \ 
 		\textbf{Requirement Type:} 9 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 4 \\
 		\textbf{Description:} The user's game must end when they are consumed. \\
 		\textbf{Rationale:} This is how the consumption mechanic works. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -264,7 +301,7 @@ a) Functional Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 8 \ \ 
 		\textbf{Requirement Type:} 9 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 3/4 \\
 		\textbf{Description:} The game must keep track of character weights and collisions. \\
 		\textbf{Rationale:} This data is necessary in order to keep the game going. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -283,7 +320,7 @@ a) Functional Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 9 \ \ 
 		\textbf{Requirement Type:} 9 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 1 \\
 		\textbf{Description:} When the user starts the game, their character's weight is set to the default minimum. \\
 		\textbf{Rationale:} Fairness and consistency. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -301,7 +338,7 @@ a) Functional Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 10 \ \ 
 		\textbf{Requirement Type:} 9 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 2 \\
 		\textbf{Description:} The game must periodically add new objects to the board where they have been consumed. \\
 		\textbf{Rationale:} In order for the game to continue, there must always be a way for characters to grow in weight. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -315,12 +352,12 @@ a) Functional Requirements
 	}
 } \bigskip
 
-b) Data Requirements \\
+\textbf{b) Data Requirements \\}
 	Not applicable to this project.
 
 \section{Non-functional Requirements}
 
-a) Appearance Requirements
+\textbf{a) Appearance Requirements}
 \medskip 
 
 
@@ -328,7 +365,7 @@ a) Appearance Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 11 \ \ 
 		\textbf{Requirement Type:} 10 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 2 \\
 		\textbf{Description:} The game must display characters as circles whose sizes correspond to their weights. \\
 		\textbf{Rationale:} Allows users to distinguish the weights of characters easily. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -347,7 +384,7 @@ a) Appearance Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 12 \ \ 
 		\textbf{Requirement Type:} 10 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 1 \\
 		\textbf{Description:} The game must display characters in various colours. \\
 		\textbf{Rationale:} Colours make it easier for users to distinguish between characters. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -366,7 +403,7 @@ a) Appearance Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 13 \ \ 
 		\textbf{Requirement Type:} 10 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 1 \\
 		\textbf{Description:} The game must display the user's chosen player-name over top of their character. \\
 		\textbf{Rationale:} Names allow even further distinguishing between characters. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -380,12 +417,12 @@ a) Appearance Requirements
 	}
 } \bigskip 
 
-b) Style Requirements \\
+\textbf{b) Style Requirements \\}
 Not applicable to this project. \\
 \medskip
 
 11. Usability and Humanity Requirements \\
-a) Ease of Use Requirements
+\textbf{a) Ease of Use Requirements}
 \medskip
 
 
@@ -393,7 +430,7 @@ a) Ease of Use Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 14 \ \ 
 		\textbf{Requirement Type:} 11 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} All \\
 		\textbf{Description:} The game must be easy to use by the average internet-user. \\
 		\textbf{Rationale:} The target audience is internet-users. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -407,18 +444,18 @@ a) Ease of Use Requirements
 	}
 } \bigskip
 
-b) Personalization and Internationalization Requirements \\
+\textbf{b) Personalization and Internationalization Requirements \\}
 Not applicable to this project.
 \medskip
 
-c) Learning Requirements
+\textbf{c) Learning Requirements}
 \medskip
 
 \fbox{
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 15 \ \ 
 		\textbf{Requirement Type:} 11 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 1 \\
 		\textbf{Description:} An instructions page will be accessible to the user. \\
 		\textbf{Rationale:} The user may need a reference to learn the controls. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -432,23 +469,23 @@ c) Learning Requirements
 	}
 } \bigskip
 
-d) Understandability and Politeness Requirements \\
+\textbf{d) Understandability and Politeness Requirements \\}
 Not applicable to this project.
 \medskip
 
-e) Accessibility Requirements \\
+\textbf{e) Accessibility Requirements \\}
 Not applicable to this project.
 \medskip
 
 12. Performance Requirements \\
-a) Speed and Latency Requirements
+\textbf{a) Speed and Latency Requirements}
 \medskip
 
 \fbox{
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 16 \ \ 
 		\textbf{Requirement Type:} 12 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} All \\
 		\textbf{Description:} The game must be sufficiently responsive. \\
 		\textbf{Rationale:} The game requires real-time interactions between characters. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -462,21 +499,21 @@ a) Speed and Latency Requirements
 	}
 } \bigskip
 
-b) Safety Critical Requirements \\
+\textbf{b) Safety Critical Requirements \\}
 Not applicable to this project.
 \medskip
 
-c) Precision of Accuracy Requirements \\
+\textbf{c) Precision of Accuracy Requirements \\}
 Not applicable to this project.
 \medskip
 
-d) Reliability and Availability Requirements
+\textbf{d) Reliability and Availability Requirements}
 
 \fbox{
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 17 \ \ 
 		\textbf{Requirement Type:} 12 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 1 \\
 		\textbf{Description:} The game server must be running 24/7.  \\
 		\textbf{Rationale:} Users must always be able to access the ongoing, single instance of the game. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -490,7 +527,7 @@ d) Reliability and Availability Requirements
 	}
 } \bigskip
 
-e) Robustness or Fault Tolerance Requirements
+\textbf{e) Robustness or Fault Tolerance Requirements}
 \medskip
 
 
@@ -498,7 +535,7 @@ e) Robustness or Fault Tolerance Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 18 \ \ 
 		\textbf{Requirement Type:} 12 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 1 \\
 		\textbf{Description:} The game must handle player-names that are not supported. \\
 		\textbf{Rationale:} Names that are too long will be too large to display. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -512,14 +549,14 @@ e) Robustness or Fault Tolerance Requirements
 	}
 } \bigskip
 
-f) Capacity Requirements
+\textbf{f) Capacity Requirements}
 \medskip
 
 \fbox{
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 19 \ \ 
 		\textbf{Requirement Type:} 12 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} 1 \\
 		\textbf{Description:} The game must be able to handle up to 500 players at once on its server. \\
 		\textbf{Rationale:} If the game is as popular as hoped, we want it to stay running as much as possible. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -533,24 +570,24 @@ f) Capacity Requirements
 	}
 } \bigskip
 
-g) Scalability Requirements \\
+\textbf{g) Scalability Requirements \\}
 Not applicable to this project.
 \medskip
 
-h) Longevity Requirements \\
+\textbf{h) Longevity Requirements \\}
 Not applicable to this project.
 \medskip
 
 13. Operational and Environmental Requirements \\
-a) Expected Physical Environment
+\textbf{a) Expected Physical Environment}
 \medskip
 
 \fbox{
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 20 \ \ 
 		\textbf{Requirement Type:} 13 \ \ 
-		\textbf{Event/Use case \#:}  \\
-		\textbf{Description:} The game must be runnable on the most recent versions of Safari, Chrome, and Internet Explorer. \\
+		\textbf{Event/Use case \#:} All \\
+		\textbf{Description:} The game must be runnable on the most recent versions of Safari, Chrome, Firefox ,and Internet Explorer. \\
 		\textbf{Rationale:} These are the most popular browsers on which to play online games. \\
 		\textbf{Originator:} Vicky Bilbily \\
 		\textbf{Fit Criterion:} The user is able to successfully start and play the game from these aforementioned browsers with internet connection.\\
@@ -563,20 +600,20 @@ a) Expected Physical Environment
 	}
 } \bigskip
 
-b) Requirements for Interfacing with Adjacent Systems \\
+\textbf{b) Requirements for Interfacing with Adjacent Systems \\}
 Not applicable to this project.
 \medskip
 
-c) Productization Requirements \\
+\textbf{c) Productization Requirements \\}
 Not applicable to this project.
 \medskip
 
-d) Release Requirements \\
+\textbf{d) Release Requirements \\}
 Not applicable to this project.
 \medskip
 
 14. Maintanability and Support Requirements \\
-a) Maintenance Requirements
+\textbf{a) Maintenance Requirements}
 \medskip
 
 
@@ -584,7 +621,7 @@ a) Maintenance Requirements
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 21 \ \ 
 		\textbf{Requirement Type:} 14 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} All \\
 		\textbf{Description:} The code must be written according to proper OOP standards such that it is easy to maintain and change. \\
 		\textbf{Rationale:} The requirements may change in the future. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -598,35 +635,35 @@ a) Maintenance Requirements
 	}
 } \bigskip
 
-b) Supportability Requirements \\
+\textbf{b) Supportability Requirements \\}
 Not applicable to this product.
 \medskip
 
-c) Adaptability Requirements \\
+\textbf{c) Adaptability Requirements \\}
 Not applicable to this project.
 \medskip
 
 15. Security Requirements \\
-a) Access Requirements \\
+\textbf{a) Access Requirements \\}
 Not applicable to this project.
 \medskip
 
-b) Integrity Requirements \\
+\textbf{b) Integrity Requirements \\}
 Not applicable to this project
 \medskip
 
-c) Privacy Requirements
+\textbf{c) Privacy Requirements}
 \medskip
 
 \fbox{
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 22 \ \ 
 		\textbf{Requirement Type:} 15 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} All \\
 		\textbf{Description:} The server must be secure. \\
 		\textbf{Rationale:} Avoid hijacking and hacking of the game. \\
 		\textbf{Originator:} Vicky Bilbily \\
-		\textbf{Fit Criterion:} Nobody but the administrator is able to access the server. \\
+		\textbf{Fit Criterion:} Nobody but the administrator is able to access the server back-end. \\
 		\textbf{Customer Satisfaction:} 5 \ \ 
 		\textbf{Customer Dissatisfaction:} 5 \\
 		\textbf{Priority:} High \ \ 
@@ -636,22 +673,22 @@ c) Privacy Requirements
 	}
 } \bigskip
 
-d) Audit Requirements \\
+\textbf{d) Audit Requirements \\}
 Not applicable to this project
 \medskip
 
-e) Immunity Requirements \\
+\textbf{e) Immunity Requirements \\}
 Not applicable to this project
 \medskip
 
 16. Cultural and Political Requirements \\
-a) Cultural Requirements \\
+\textbf{a) Cultural Requirements \\}
 
 \fbox{
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 23 \ \ 
 		\textbf{Requirement Type:} 16 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} All \\
 		\textbf{Description:} The game instructions must be written in English. \\
 		\textbf{Rationale:} English is a popular language on the internet, and the language of we game creators. \\
 		\textbf{Originator:} Vicky Bilbily \\
@@ -665,27 +702,27 @@ a) Cultural Requirements \\
 	}
 } \bigskip
 
-b) Political Requirements \\
+\textbf{b) Political Requirements \\}
 Not applicable to this project.
 \medskip
 
 17. Legal Requirements \\
-a) Compliance Requirements \\
+\textbf{a) Compliance Requirements \\}
 Not applicable to this project
 \medskip
 
-b) Standards Requirements
+\textbf{b) Standards Requirements}
 \medskip
 
 \fbox{
 	\parbox{\textwidth}{
 		\textbf{Requirement \#:} 24 \ \ 
 		\textbf{Requirement Type:} 17 \ \ 
-		\textbf{Event/Use case \#:}  \\
+		\textbf{Event/Use case \#:} All \\
 		\textbf{Description:} The game must comply with legal internet standards. \\
 		\textbf{Rationale:} The game is run on the internet. \\
 		\textbf{Originator:} Vicky Bilbily \\
-		\textbf{Fit Criterion:} The game does not break any rules of --name some internet standards act??-- \\
+		\textbf{Fit Criterion:} The game does not break any rules of the W3C Recommendation. \\
 		\textbf{Customer Satisfaction:} 5 \ \ 
 		\textbf{Customer Dissatisfaction:} 5 \\
 		\textbf{Priority:} High \ \ 
