@@ -9,10 +9,11 @@ module.exports.getRouter = function(io){
 
 	var blobs = [];
 	var blobCount = 0;
-
+	var blobColors = ["red","green","blue","pink","orange","yellow","purple","cyan","magenta"];
 	io.on('connection', function(socket){
 		var newId = blobs.length;
-		blobs[newId] = {id: blobCount++, x: Math.floor((Math.random() * 1200) + 0), y: Math.floor((Math.random() * 600) + 0), mass: 20, color: "green"};
+		// var color = blobColors[blobCount % blobColors.length];
+		blobs[newId] = {id: blobCount++, x: Math.floor((Math.random() * 1200) + 0), y: Math.floor((Math.random() * 600) + 0), mass: 20, color: blobColors[blobCount % blobColors.length]};
 		var response = [blobs, newId];
 		socket.emit('ready',response);
 		socket.on('objUpdate',function(obj){
