@@ -15,7 +15,6 @@ module.exports.getRouter = function(io){
 		blobs[newId] = {id: blobCount++, x: Math.floor((Math.random() * 1200) + 0), y: Math.floor((Math.random() * 600) + 0), mass: 20, color: "green"};
 		var response = [blobs, newId];
 		socket.emit('ready',response);
-		console.log('Blob ' + newId + " Connected");
 		socket.on('objUpdate',function(obj){
 			for (var i = 0; i <= blobs.length; i++){
 				if (blobs[i].id == obj.id){
@@ -33,6 +32,7 @@ module.exports.getRouter = function(io){
 							break;
 						case "down":
 							blobs[i].y++;
+							console.log("Changing down");
 							break;
 						case "down-left":
 							blobs[i].y++;
