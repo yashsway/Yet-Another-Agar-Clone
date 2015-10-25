@@ -18,6 +18,7 @@ $(document).ready(function(){
 		var rect = canvas.getBoundingClientRect();
 		mouse.x = e.clientX - rect.left;
 		mouse.y = e.clientY - rect.top;
+		console.log("mouse position: " + mouse.x + ", " + mouse.y);
 	}
 
 	function direction(){
