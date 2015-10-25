@@ -4,7 +4,7 @@ $(document).ready(function(){
 	var context = canvas.getContext("2d");
 	var mouse = {x:0, y:0};
 	var pls;
-	var player;
+	var playerNum;
 
 	function drawCircle(x, y, radius, color){
 		context.fillStyle=color;
@@ -21,8 +21,8 @@ $(document).ready(function(){
 	}
 
 	function direction(){
-		var dx = (mouse.x - player.x);
-		var dy = -(mouse.y - player.y);
+		var dx = (mouse.x - pls[playerNum].x);
+		var dy = -(mouse.y - pls[playerNum].y);
 		var slope = dy/dx;
 		if (Math.abs(slope) < 0.5){
 			if (dx > 0) return "right";
@@ -47,7 +47,7 @@ $(document).ready(function(){
 
 	function getDirection(e){
 		var nextDir = direction();
-		var newObj = {id: player.id, x: player.x, y: player.y, mass: player.mass, color: player.color, direction: nextDir};
+		var newObj = {id: pls[playerNum].id, x: pls[playerNum].x, y: pls[playerNum].y, mass: pls[playerNum].mass, color: pls[playerNum].color, direction: nextDir};
 		socket.emit('objUpdate',newObj);
 	}
 
@@ -59,7 +59,7 @@ $(document).ready(function(){
 	}
 	socket.on('ready',function(response){
 		pls = response[0];
-		player = response[0][response[1]];
+		playerNum = response[1];
 		drawPlayers(pls);
 		window.addEventListener('mousemove', mousePos);
 		// window.addEventListener('mousemove', getDirection);
