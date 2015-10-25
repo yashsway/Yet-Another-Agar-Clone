@@ -21,10 +21,7 @@ app.set('ip', process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1");
  * Create HTTP server.
  */
 
-var server = http.createServer(app).listen(app.get('port') ,app.get('ip'), function () {
-    console.log("✔ Express server listening at %s:%d ", app.get('ip'),app.get('port'));
-    server();
-});
+var server = http.createServer(app);
 
 /**
  * Socket.io
@@ -37,7 +34,7 @@ io.attach(server);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port,app.get('ip'));
 server.on('error', onError);
 server.on('listening', onListening);
 
