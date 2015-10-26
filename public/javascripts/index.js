@@ -1,6 +1,6 @@
 $(document).ready(function(){
-	//var socket = io();
-	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
+	var socket = io();
+	// var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var canvas = document.getElementById("agarCanvas");
 	var context = canvas.getContext("2d");
 	var mouse = {x:0, y:0};
@@ -52,8 +52,8 @@ $(document).ready(function(){
 
 	function getDirection(e){
 		if (!isPageHidden()){
-			var nextDir = direction();
-			var newObj = {id: getBlob(blobId).id, x: getBlob(blobId).x, y: getBlob(blobId).y, mass: getBlob(blobId).mass, color: getBlob(blobId).color, direction: nextDir};
+			// var nextDir = direction();
+			var newObj = {id: getBlob(blobId).id, x: getBlob(blobId).x, y: getBlob(blobId).y, mass: getBlob(blobId).mass, color: getBlob(blobId).color, mouse: mouse};
 			socket.emit('objUpdate',newObj);
 		}
 	}
