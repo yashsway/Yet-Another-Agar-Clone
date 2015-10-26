@@ -12,9 +12,9 @@ module.exports.getRouter = function(io){
 	var blobColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
 	io.on('connection', function(socket){
 		console.log("Blob " + blobCount + " connected");
-		var newId = blobs.length;
+		var newId = blobCount++;
 
-		blobs[newId] = {x: Math.floor((Math.random() * 1200) + 0), y: Math.floor((Math.random() * 600) + 0), mass: 20, color: blobColors[blobCount % blobColors.length], id: blobCount++};
+		blobs[blobs.length] = {x: Math.floor((Math.random() * 1200) + 0), y: Math.floor((Math.random() * 600) + 0), mass: 20, color: blobColors[newId % blobColors.length], id: newId};
 		var response = [blobs, newId];
 		socket.emit('ready',response);
 		socket.on('disconnect',function(){
