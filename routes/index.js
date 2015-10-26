@@ -10,6 +10,8 @@ module.exports.getRouter = function(io){
 	var blobs = [];
 	var blobCount = 0;
 	var blobColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
+	var percent = 0.1;
+
 	io.on('connection', function(socket){
 		console.log("Blob " + blobCount + " connected");
 		var newId = blobCount++;
@@ -28,39 +30,44 @@ module.exports.getRouter = function(io){
 		socket.on('objUpdate',function(obj){
 			for (var i = 0; i < blobs.length; i++){
 				if (blobs[i].id == obj.id){
-					switch(obj.direction){
-						case "up":
-							blobs[i].y--;
-							break;
-						case "up-right":
-							blobs[i].y--;
-							blobs[i].x++;
-							break;
-						case "up-left":
-							blobs[i].y--;
-							blobs[i].x--;
-							break;
-						case "down":
-							blobs[i].y++;
-							break;
-						case "down-left":
-							blobs[i].y++;
-							blobs[i].x--;
-							break;
-						case "down-right":
-							blobs[i].y++;
-							blobs[i].x++;
-							break;
-						case "right":
-							blobs[i].x++;
-							break;
-						case "left":
-							blobs[i].x--;
-							break;
-						default:
-							break;
-					}
+					var dx = obj.mouse.x-blobs[i].x;
+					var dy = obj.mouse.y-blobs[i].y;
+					blobs[i].x = blobs[i].x + dx*percent;
+					blobs[i].y = blobs[i].y + dy*percent;
 					break;
+					// switch(obj.direction){
+					// 	case "up":
+					// 		blobs[i].y--;
+					// 		break;
+					// 	case "up-right":
+					// 		blobs[i].y--;
+					// 		blobs[i].x++;
+					// 		break;
+					// 	case "up-left":
+					// 		blobs[i].y--;
+					// 		blobs[i].x--;
+					// 		break;
+					// 	case "down":
+					// 		blobs[i].y++;
+					// 		break;
+					// 	case "down-left":
+					// 		blobs[i].y++;
+					// 		blobs[i].x--;
+					// 		break;
+					// 	case "down-right":
+					// 		blobs[i].y++;
+					// 		blobs[i].x++;
+					// 		break;
+					// 	case "right":
+					// 		blobs[i].x++;
+					// 		break;
+					// 	case "left":
+					// 		blobs[i].x--;
+					// 		break;
+					// 	default:
+					// 		break;
+					// }
+					// break;
 				}
 			}
 		});
