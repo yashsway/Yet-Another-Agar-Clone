@@ -1,11 +1,11 @@
 $(document).ready(function(){
-	// var socket = io();
-	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
+	var socket = io();
+	// var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var canvas = document.getElementById("agarCanvas");
 	var context = canvas.getContext("2d");
 	var mouse = {x:0, y:0};
 	var blobs;
-	var blobNum;
+	var blobId;
 
 	function drawCircle(x, y, radius, color){
 		context.fillStyle=color;
@@ -22,8 +22,8 @@ $(document).ready(function(){
 	}
 
 	function direction(){
-		var dx = (mouse.x - getBlob(blobNum).x);
-		var dy = -(mouse.y - getBlob(blobNum).y);
+		var dx = (mouse.x - getBlob(blobId).x);
+		var dy = -(mouse.y - getBlob(blobId).y);
 		var slope = dy/dx;
 		if (Math.abs(slope) < 0.5){
 			if (dx > 0) return "right";
@@ -53,7 +53,7 @@ $(document).ready(function(){
 	function getDirection(e){
 		if (!isPageHidden()){
 			var nextDir = direction();
-			var newObj = {id: getBlob(blobNum).id, x: getBlob(blobNum).x, y: getBlob(blobNum).y, mass: getBlob(blobNum).mass, color: getBlob(blobNum).color, direction: nextDir};
+			var newObj = {id: getBlob(blobId).id, x: getBlob(blobId).x, y: getBlob(blobId).y, mass: getBlob(blobId).mass, color: getBlob(blobId).color, direction: nextDir};
 			socket.emit('objUpdate',newObj);
 		}
 	}
@@ -66,7 +66,9 @@ $(document).ready(function(){
 	}
 	socket.on('ready',function(response){
 		blobs = response[0];
-		blobNum = response[1];
+		blobId = response[1];
+		console.log(blobId);
+		console.log(blobs);
 		drawPlayers(blobs);
 		window.addEventListener('mousemove', mousePos);
 	});
