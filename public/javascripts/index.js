@@ -21,38 +21,12 @@ $(document).ready(function(){
 		mouse.y = e.clientY - rect.top;
 	}
 
-	function direction(){
-		var dx = (mouse.x - getBlob(blobId).x);
-		var dy = -(mouse.y - getBlob(blobId).y);
-		var slope = dy/dx;
-		if (Math.abs(slope) < 0.5){
-			if (dx > 0) return "right";
-			else return "left";
-		}
-		else if (Math.abs(slope) < 2){
-			if (dy>0){
-				if (dx>0) return "up-right";
-				else return "up-left";
-			}
-			else {
-				if (dx>0) return "down-right";
-				else return "down-left";
-			}
-		}
-		else{
-			if (dy>0) return "up";
-			else return "down";
-		}
-
-	}
-
 	function isPageHidden(){
 		return document.hidden || document.msHidden || document.webkitHidden || document.mozHidden;
 	}
 
 	function getDirection(e){
 		if (!isPageHidden()){
-			// var nextDir = direction();
 			var newObj = {id: getBlob(blobId).id, x: getBlob(blobId).x, y: getBlob(blobId).y, mass: getBlob(blobId).mass, color: getBlob(blobId).color, mouse: mouse};
 			socket.emit('objUpdate',newObj);
 		}
