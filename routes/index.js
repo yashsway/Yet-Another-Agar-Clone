@@ -13,12 +13,20 @@ module.exports.getRouter = function(io){
 	io.on('connection', function(socket){
 		console.log("Blob " + blobCount + " connected");
 		var newId = blobs.length;
-		// var color = blobColors[blobCount % blobColors.length];
-		blobs[newId] = {id: blobCount++, x: Math.floor((Math.random() * 1200) + 0), y: Math.floor((Math.random() * 600) + 0), mass: 20, color: blobColors[blobCount % blobColors.length]};
+
+		blobs[newId] = {x: Math.floor((Math.random() * 1200) + 0), y: Math.floor((Math.random() * 600) + 0), mass: 20, color: blobColors[blobCount % blobColors.length], id: blobCount++};
 		var response = [blobs, newId];
 		socket.emit('ready',response);
+		socket.on('disconnect',function(){
+			for (var i = 0; i < blobs.length;i++){
+				if (blobs[i].id == newId){
+					blobs.splice(i,1);
+					console.log("Blob " + newId + " disconnected and removed.");
+				}
+			}
+		});
 		socket.on('objUpdate',function(obj){
-			for (var i = 0; i <= blobs.length; i++){
+			for (var i = 0; i < blobs.length; i++){
 				if (blobs[i].id == obj.id){
 					switch(obj.direction){
 						case "up":
@@ -52,8 +60,8 @@ module.exports.getRouter = function(io){
 						default:
 							break;
 					}
+					break;
 				}
-				break;
 			}
 		});
 	});

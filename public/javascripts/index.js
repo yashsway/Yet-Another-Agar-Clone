@@ -3,8 +3,8 @@ $(document).ready(function(){
 	var canvas = document.getElementById("agarCanvas");
 	var context = canvas.getContext("2d");
 	var mouse = {x:0, y:0};
-	var pls;
-	var playerNum;
+	var blobs;
+	var blobNum;
 
 	function drawCircle(x, y, radius, color){
 		context.fillStyle=color;
@@ -18,12 +18,11 @@ $(document).ready(function(){
 		var rect = canvas.getBoundingClientRect();
 		mouse.x = e.clientX - rect.left;
 		mouse.y = e.clientY - rect.top;
-		console.log("mouse position: " + mouse.x + ", " + mouse.y);
 	}
 
 	function direction(){
-		var dx = (mouse.x - pls[playerNum].x);
-		var dy = -(mouse.y - pls[playerNum].y);
+		var dx = (mouse.x - getBlob(blobNum).x);
+		var dy = -(mouse.y - getBlob(blobNum).y);
 		var slope = dy/dx;
 		if (Math.abs(slope) < 0.5){
 			if (dx > 0) return "right";
@@ -46,10 +45,16 @@ $(document).ready(function(){
 
 	}
 
+	function isPageHidden(){
+		return document.hidden || document.msHidden || document.webkitHidden || document.mozHidden;
+	}
+
 	function getDirection(e){
-		var nextDir = direction();
-		var newObj = {id: pls[playerNum].id, x: pls[playerNum].x, y: pls[playerNum].y, mass: pls[playerNum].mass, color: pls[playerNum].color, direction: nextDir};
-		socket.emit('objUpdate',newObj);
+		if (!isPageHidden()){
+			var nextDir = direction();
+			var newObj = {id: getBlob(blobNum).id, x: getBlob(blobNum).x, y: getBlob(blobNum).y, mass: getBlob(blobNum).mass, color: getBlob(blobNum).color, direction: nextDir};
+			socket.emit('objUpdate',newObj);
+		}
 	}
 
 	function drawPlayers(players){
@@ -59,16 +64,22 @@ $(document).ready(function(){
 		}
 	}
 	socket.on('ready',function(response){
-		pls = response[0];
-		playerNum = response[1];
-		drawPlayers(pls);
+		blobs = response[0];
+		blobNum = response[1];
+		drawPlayers(blobs);
 		window.addEventListener('mousemove', mousePos);
-		// window.addEventListener('mousemove', getDirection);
 	});
 
 	socket.on('update',function(response){
-		pls = response;
-		drawPlayers(pls);
+		blobs = response;
+		drawPlayers(blobs);
 		getDirection();
 	});
+	function getBlob(id){
+		for (var i = 0; i < blobs.length; i++){
+			if (blobs[i].id == id){
+				return blobs[i];
+			}
+		}
+	}
 });
