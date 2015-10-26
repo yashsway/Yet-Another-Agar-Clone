@@ -9,7 +9,7 @@ module.exports.getRouter = function(io){
 
 	var blobs = [];
 	var blobCount = 0;
-	var blobColors = ["red","green","blue","pink","orange","yellow","purple","cyan","magenta"];
+	var blobColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
 	io.on('connection', function(socket){
 		console.log("Blob " + blobCount + " connected");
 		var newId = blobs.length;
