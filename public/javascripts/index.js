@@ -1,6 +1,6 @@
 $(document).ready(function(){
-	var socket = io();
-	// var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
+	//var socket = io();
+	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var canvas = document.getElementById("agarCanvas");
 	var context = canvas.getContext("2d");
 	var mouse = {x:0, y:0};
@@ -67,8 +67,6 @@ $(document).ready(function(){
 	socket.on('ready',function(response){
 		blobs = response[0];
 		blobId = response[1];
-		console.log(blobId);
-		console.log(blobs);
 		drawPlayers(blobs);
 		window.addEventListener('mousemove', mousePos);
 	});
