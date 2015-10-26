@@ -68,7 +68,7 @@ module.exports.getRouter = function(io){
 	//This is our 'game loop' implemented as a callback loop.
 	var sendBlobs = function(){
 		io.emit('update',blobs);
-		setTimeout(sendBlobs,5);
+		setTimeout(sendBlobs,2);
 	};
 	sendBlobs();
 
