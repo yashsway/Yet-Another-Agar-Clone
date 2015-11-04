@@ -1,0 +1,58 @@
+TASKS! last updated november 3rd
+
+DESIGN DOC 
+
+must f/o organization of modules first
+
+-3) Title page
+-2) Table of Contents
+ 0) Major Revision History
+ 1) Introduction and Overview - yash
+ 	- reminder of what the project is
+ 	- context of design doc among other docs (esp. SRS and MIS)
+ 	- clear statement of used design principles
+ 	- explanation of doc structure
+ 2) Numbered list of anticipated vs. unlikely changes - jemar
+ 3) Module Hierarchy - vicky
+ 	- behaviour hiding module (functional reqirements modules)
+ 	- software decision module (generic modules)
+ 4) Connection between requirements and design - jemar
+ 	- design decisions made to realize the requirements
+ 5) Module decomposition - ALL
+ 	- interface documented for all modules
+ 	- input and output are specified for each access program (method)
+ 	- state variables explained in modules with memory
+ 	- environment variables explained for modules that interact with external stuff
+ 	- one would have a good idea of how to implement any given module
+ 	- one module one secret (?)
+ 	- secrets are nouns
+ 6) Traceability matrices - jemar
+ 	- between modules and requirements (sparce for functional req.s)
+ 	- between modules and anticipated changes (sparce)
+ 7) Uses hierarchy between modules - vicky
+ 	- no cycles
+ 8) Scheduling - yash/vicky
+ 	- detailed timeline for the remainder of the course (implementation, revision of SRS, testing, usability test etc.)
+ 	- Pert chart
+ 	- Gantt chart
+
+AGAR.IO MODULE OUTLINE :^)
+
+- fixed speed (proportional to weight) ~ yash
+- food generation ~ yash
+- eating ~ jemar
+- center-view for each player ~ vicky
+- players can't move outside canvas ~ jemar
+- join screen ~ yash/jemar
+- names ~ vicky
+- display score ~ vicky
+- final score screen and redirect ~ yash
+
+- shooting/splitting (maybe)
+- spike circles (maybe)
+- leaderboard (maybe)
+
+
+
+aka.ms/onlineresume
+

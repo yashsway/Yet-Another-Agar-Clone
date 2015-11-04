@@ -11,7 +11,6 @@ $(document).ready(function(){
 	//hi
 
 	function drawGrid(){
-		console.log("called")
 		context.strokeStyle="#d3d3d3";
 		//vertical
 		for (var i=0; i<width; i+=50){
