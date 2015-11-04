@@ -2,13 +2,17 @@ $(document).ready(function(){
 	// var socket = io();
 	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var canvas = document.getElementById("agarCanvas");
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
 	var context = canvas.getContext("2d");
-	var width = canvas.width;
-	var height = canvas.height;
+	var width = 3000;
+	var height = 3000;
 	var mouse = {x:0, y:0};
 	var blobs;
 	var blobId;
 	var alive;
+	var viewX=0;
+	var viewY=0;
 
 	function drawGrid(){
 		context.strokeStyle="#d3d3d3";
@@ -38,10 +42,14 @@ $(document).ready(function(){
 		context.closePath();
 	}
 
+	function clamp(value, min, max){
+	    return value < min ? min : (value > max ? max : value);
+	}
+
 	function mousePos(e){
 		var rect = canvas.getBoundingClientRect();
-		mouse.x = e.clientX - rect.left;
-		mouse.y = e.clientY - rect.top;
+		mouse.x = e.clientX - rect.left - viewX;
+		mouse.y = e.clientY - rect.top - viewY;
 	}
 
 	function isPageHidden(){
@@ -62,8 +70,13 @@ $(document).ready(function(){
 	}
 
 	function drawFrame(players){
+		var thisBlob = getBlob(blobId);
+		context.setTransform(1,0,0,1,0,0);
 		context.clearRect(0,0,canvas.width,canvas.height);
-		drawGrid();
+		viewX = clamp(-thisBlob.x + canvas.width/2,-3000+canvas.width,0);
+    	viewY = clamp(-thisBlob.y + canvas.height/2,-3000+canvas.height,0);
+    	context.translate( viewX, viewY );
+    	drawGrid();
 		drawPlayers(players);
 	}
 
