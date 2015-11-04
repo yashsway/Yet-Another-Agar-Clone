@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	//var socket = io();
+	// var socket = io();
 	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var canvas = document.getElementById("agarCanvas");
 	var context = canvas.getContext("2d");
@@ -8,7 +8,7 @@ $(document).ready(function(){
 	var mouse = {x:0, y:0};
 	var blobs;
 	var blobId;
-	//hi
+	
 
 	function drawGrid(){
 		context.strokeStyle="#d3d3d3";

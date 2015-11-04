@@ -16,7 +16,7 @@ module.exports.getRouter = function(io){
 		console.log("Blob " + blobCount + " connected");
 		var newId = blobCount++;
 
-		blobs[blobs.length] = {x: Math.floor((Math.random() * 1200) + 0), y: Math.floor((Math.random() * 600) + 0), mass: 20, color: blobColors[newId % blobColors.length], id: newId};
+		blobs[blobs.length] = {x: Math.floor((Math.random() * 3000) + 0), y: Math.floor((Math.random() * 3000) + 0), mass: 20, color: blobColors[newId % blobColors.length], id: newId};
 		var response = [blobs, newId];
 		socket.emit('ready',response);
 		socket.on('disconnect',function(){
@@ -32,8 +32,12 @@ module.exports.getRouter = function(io){
 				if (blobs[i].id == obj.id){
 					var dx = obj.mouse.x-blobs[i].x;
 					var dy = obj.mouse.y-blobs[i].y;
-					blobs[i].x = blobs[i].x + dx*percent;
-					blobs[i].y = blobs[i].y + dy*percent;
+					if (0 <= blobs[i].x + dx*percent && 3000 >= blobs[i].x + dx*percent){
+						blobs[i].x = blobs[i].x + dx*percent;
+					}
+					if (0 <= blobs[i].y + dy*percent && 3000 >= blobs[i].y + dy*percent){
+						blobs[i].y = blobs[i].y + dy*percent;
+					}
 					break;
 				}
 			}
