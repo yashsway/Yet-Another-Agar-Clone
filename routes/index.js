@@ -16,7 +16,7 @@ module.exports.getRouter = function(io){
 		console.log("Blob " + blobCount + " connected");
 		var newId = blobCount++;
 
-		blobs[blobs.length] = {x: Math.floor((Math.random() * 3000) + 0), y: Math.floor((Math.random() * 3000) + 0), mass: 20, color: blobColors[newId % blobColors.length], id: newId};
+		blobs[blobs.length] = {x: Math.floor((Math.random() * 3000) + 0), y: Math.floor((Math.random() * 3000) + 0), mass: Math.floor((Math.random() * 20) + 5), color: blobColors[newId % blobColors.length], id: newId};
 		var response = [blobs, newId];
 		socket.emit('ready',response);
 		socket.on('disconnect',function(){
@@ -43,8 +43,42 @@ module.exports.getRouter = function(io){
 			}
 		});
 	});
+	// O(n^2) should probably improve
+	var checkEating = function(){
+		for (var i = 0; i < blobs.length; i++) {
+			for (var j = 0; j < blobs.length; j++) {
+				console.log(blobs[i].id + " will eat " + blobs[j].id + ": " + (i != j && !blobs[i].eaten && !blobs[j].eaten && inside(blobs[j],blobs[i])));
+				// Checking for the eating of blobs that haven't already been eaten.
+				if (i != j && !blobs[i].eaten && !blobs[j].eaten && inside(blobs[j],blobs[i])){
+					console.log("Doing eating of " + blobs[j].id  + " by " + blobs[i].id);
+					blobs[i].mass += blobs[j].mass;
+					blobs[j].eaten = true; //Mark blob for deletion
+				}
+			}
+		}
+		// Remove eaten blobs (we loop in reverse to avoid the trouble of index changes)
+		for (var k = blobs.length - 1; k >= 0; k--) {
+			if (blobs[k].eaten){
+				console.log("Killing blob: " + blobs[k].id);
+				io.emit('death'+blobs[k].id,blobs[k]);
+				blobs.splice(k,1);
+			}
+		}
+	};
+	//checks if blob a is inside blob b
+	var inside = function(a,b){
+		var distance = Math.sqrt(Math.pow((b.x - a.x),2) + Math.pow((b.y - a.y),2));
+		console.log("Distance: " + distance);
+		console.log("Difference: " + (b.mass - a.mass));
+		console.log("Inside: " + (distance < b.mass - a.mass));
+		if (distance < b.mass - a.mass){
+			return true;
+		}
+		return false;
+	};
 	//This is our 'game loop' implemented as a callback loop.
 	var sendBlobs = function(){
+		checkEating();
 		io.emit('update',blobs);
 		setTimeout(sendBlobs,20);
 	};

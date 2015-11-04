@@ -8,7 +8,7 @@ $(document).ready(function(){
 	var mouse = {x:0, y:0};
 	var blobs;
 	var blobId;
-	
+	var alive;
 
 	function drawGrid(){
 		context.strokeStyle="#d3d3d3";
@@ -49,7 +49,7 @@ $(document).ready(function(){
 	}
 
 	function getDirection(e){
-		if (!isPageHidden()){
+		if (!isPageHidden() && alive){
 			var newObj = {id: getBlob(blobId).id, x: getBlob(blobId).x, y: getBlob(blobId).y, mass: getBlob(blobId).mass, color: getBlob(blobId).color, mouse: mouse};
 			socket.emit('objUpdate',newObj);
 		}
@@ -70,6 +70,11 @@ $(document).ready(function(){
 	socket.on('ready',function(response){
 		blobs = response[0];
 		blobId = response[1];
+		socket.on('death'+blobId,function(){
+			console.log("Looks like we died..");
+			alive = false;
+		});
+		alive = true;
 		drawFrame(blobs);
 		window.addEventListener('mousemove', mousePos);
 	});
