@@ -1,6 +1,6 @@
 $(document).ready(function(){
-	//var socket = io();
-	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
+	 var socket = io();
+	//var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var canvas = document.getElementById("agarCanvas");
 	var context = canvas.getContext("2d");
 	var width = canvas.width;
@@ -12,8 +12,8 @@ $(document).ready(function(){
 
 	function drawGrid(){
 		console.log("called")
-		context.strokeStyle="#D3D3D3";
-		//draw vertical lines
+		context.strokeStyle="#d3d3d3";
+		//vertical
 		for (var i=0; i<width; i+=50){
 			context.beginPath();
 			context.moveTo(0, i);
@@ -21,7 +21,7 @@ $(document).ready(function(){
 			context.stroke();
 			context.closePath();
 		}
-		//draw horizontal lines
+		///horizontal
 		for (var j=0; j<height; j+=50){
 			context.beginPath();
 			context.moveTo(j, 0);
@@ -29,6 +29,7 @@ $(document).ready(function(){
 			context.stroke();
 			context.closePath();
 		}
+	}
 
 	function drawCircle(x, y, radius, color){
 		context.fillStyle=color;
@@ -61,22 +62,22 @@ $(document).ready(function(){
 		}
 	}
 
-	function redraw(){
+	function drawFrame(players){
 		context.clearRect(0,0,canvas.width,canvas.height);
 		drawGrid();
-		drawPlayers(blobs);
+		drawPlayers(players);
 	}
 
 	socket.on('ready',function(response){
 		blobs = response[0];
 		blobId = response[1];
-		redraw();
+		drawFrame(blobs);
 		window.addEventListener('mousemove', mousePos);
 	});
 
 	socket.on('update',function(response){
 		blobs = response;
-		redraw();
+		drawFrame(blobs);
 		getDirection();
 	});
 	function getBlob(id){
