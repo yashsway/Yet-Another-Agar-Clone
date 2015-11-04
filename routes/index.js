@@ -30,8 +30,8 @@ module.exports.getRouter = function(io){
 		socket.on('objUpdate',function(obj){
 			for (var i = 0; i < blobs.length; i++){
 				if (blobs[i].id == obj.id){
-					var dx = obj.mouse.x-blobs[i].x;
-					var dy = obj.mouse.y-blobs[i].y;
+					var dx = obj.dir.dx
+					var dy = obj.dir.dy
 					if (0 <= blobs[i].x + dx*percent && 3000 >= blobs[i].x + dx*percent){
 						blobs[i].x = blobs[i].x + dx*percent;
 					}
@@ -39,6 +39,8 @@ module.exports.getRouter = function(io){
 						blobs[i].y = blobs[i].y + dy*percent;
 					}
 					break;
+
+
 				}
 			}
 		});
