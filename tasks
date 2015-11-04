@@ -1,4 +1,4 @@
-TASKS! last updated november 3rd
+TASKS! last updated november 4th
 
 DESIGN DOC 
 
@@ -42,7 +42,7 @@ AGAR.IO MODULE OUTLINE :^)
 - food generation ~ yash
 - eating ~ jemar
 - center-view for each player ~ vicky
-- players can't move outside canvas ~ jemar
+✓ players can't move outside canvas ~ jemar
 - join screen ~ yash/jemar
 - names ~ vicky
 - display score ~ vicky
