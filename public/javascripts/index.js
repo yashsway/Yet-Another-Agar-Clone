@@ -5,8 +5,10 @@ $(document).ready(function(){
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	var context = canvas.getContext("2d");
-	var width = 3000;
-	var height = 3000;
+	var gameW = 3000; //width
+	var gameH = 3000; //height
+	var canvW = canvas.width;
+	var canvH = canvas.height;
 	var mouse = {x:0, y:0};
 	var dir = {dx:0,dy:0};
 	var blobs;
@@ -18,18 +20,18 @@ $(document).ready(function(){
 	function drawGrid(){
 		context.strokeStyle="#d3d3d3";
 		//vertical
-		for (var i=-canvas.width; i<width+canvas.width; i+=50){
+		for (var i=-canvW; i<gameW+canvW; i+=50){
 			context.beginPath();
-			context.moveTo(-canvas.height, i);
-			context.lineTo(height+canvas.height, i);
+			context.moveTo(-canvH, i);
+			context.lineTo(gameH+canvH, i);
 			context.stroke();
 			context.closePath();
 		}
 		///horizontal
-		for (var j=-canvas.height; j<height+canvas.height; j+=50){
+		for (var j=-canvH; j<gameH+canvH; j+=50){
 			context.beginPath();
-			context.moveTo(j, -canvas.width);
-			context.lineTo(j, width+canvas.width);
+			context.moveTo(j, -canvW);
+			context.lineTo(j, gameW+canvW);
 			context.stroke();
 			context.closePath();
 		}
@@ -45,11 +47,9 @@ $(document).ready(function(){
 
 
 	function mousePos(e){
-		if (alive){
-			var rect = canvas.getBoundingClientRect();
-			mouse.x = e.clientX - rect.left;
-			mouse.y = e.clientY - rect.top;
-		}
+		var rect = canvas.getBoundingClientRect();
+		mouse.x = e.clientX - rect.left;
+		mouse.y = e.clientY - rect.top;
 	}
 
 	function isPageHidden(){
@@ -58,9 +58,10 @@ $(document).ready(function(){
 
 	function getDirection(e){
 		if (!isPageHidden() && alive){
-			dir.dx = mouse.x - canvas.width/2;
-			dir.dy = mouse.y - canvas.height/2;
-			var newObj = {id: getBlob(blobId).id, x: getBlob(blobId).x, y: getBlob(blobId).y, mass: getBlob(blobId).mass, color: getBlob(blobId).color, dir: dir};
+			dir.dx = mouse.x - canvW/2;
+			dir.dy = mouse.y - canvH/2;
+			var thisBlob = getBlob(blobId);
+			var newObj = {id: thisBlob.id, x: thisBlob.x, y: thisBlob.y, mass: thisBlob.mass, color: thisBlob.color, dir: dir};
 			socket.emit('objUpdate',newObj);
 		}
 	}
@@ -75,15 +76,15 @@ $(document).ready(function(){
 		if (alive){
 			var thisBlob = getBlob(blobId);
 			context.setTransform(1,0,0,1,0,0);
-			context.clearRect(0,0,canvas.width,canvas.height);
-			viewX = -thisBlob.x + canvas.width/2
-	    	viewY = -thisBlob.y + canvas.height/2
+			context.clearRect(0,0,canvW,canvH);
+			viewX = -thisBlob.x + canvW/2
+	    	viewY = -thisBlob.y + canvH/2
 	    	context.translate( viewX, viewY );
 	    	drawGrid();
 			drawPlayers(players);
 	    }
 	    else {
-	    	context.clearRect(0,0,canvas.width,canvas.height);
+	    	context.clearRect(0,0,canvW,canvH);
 	    	drawGrid();
 			drawPlayers(players);
 	    }
