@@ -6,6 +6,7 @@ $(document).ready(function(){
 	var mouse = {x:0, y:0};
 	var blobs;
 	var blobId;
+	//hi
 
 	function drawCircle(x, y, radius, color){
 		context.fillStyle=color;
