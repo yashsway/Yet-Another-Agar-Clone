@@ -47,9 +47,11 @@ $(document).ready(function(){
 	}
 
 	function mousePos(e){
-		var rect = canvas.getBoundingClientRect();
-		mouse.x = e.clientX - rect.left - viewX;
-		mouse.y = e.clientY - rect.top - viewY;
+		if (alive){
+			var rect = canvas.getBoundingClientRect();
+			mouse.x = e.clientX - rect.left - viewX;
+			mouse.y = e.clientY - rect.top - viewY;
+		}
 	}
 
 	function isPageHidden(){
@@ -70,14 +72,21 @@ $(document).ready(function(){
 	}
 
 	function drawFrame(players){
-		var thisBlob = getBlob(blobId);
-		context.setTransform(1,0,0,1,0,0);
-		context.clearRect(0,0,canvas.width,canvas.height);
-		viewX = clamp(-thisBlob.x + canvas.width/2,-3000+canvas.width,0);
-    	viewY = clamp(-thisBlob.y + canvas.height/2,-3000+canvas.height,0);
-    	context.translate( viewX, viewY );
-    	drawGrid();
-		drawPlayers(players);
+		if (alive){
+			var thisBlob = getBlob(blobId);
+			context.setTransform(1,0,0,1,0,0);
+			context.clearRect(0,0,canvas.width,canvas.height);
+			viewX = clamp(-thisBlob.x + canvas.width/2,-3000+canvas.width,0);
+	    	viewY = clamp(-thisBlob.y + canvas.height/2,-3000+canvas.height,0);
+	    	context.translate( viewX, viewY );
+	    	drawGrid();
+			drawPlayers(players);
+	    }
+	    else {
+	    	context.clearRect(0,0,canvas.width,canvas.height);
+	    	drawGrid();
+			drawPlayers(players);
+	    }
 	}
 
 	socket.on('ready',function(response){
