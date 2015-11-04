@@ -56,22 +56,27 @@ $(document).ready(function(){
 	}
 
 	function drawPlayers(players){
-		context.clearRect(0,0,canvas.width,canvas.height);
 		for (i = 0; i < players.length ; i++){
 			drawCircle(players[i].x, players[i].y, players[i].mass, players[i].color);
 		}
 	}
+
+	function redraw(){
+		context.clearRect(0,0,canvas.width,canvas.height);
+		drawGrid();
+		drawPlayers(blobs);
+	}
+
 	socket.on('ready',function(response){
 		blobs = response[0];
 		blobId = response[1];
-		drawGrid();
-		drawPlayers(blobs);
+		redraw();
 		window.addEventListener('mousemove', mousePos);
 	});
 
 	socket.on('update',function(response){
 		blobs = response;
-		drawPlayers(blobs);
+		redraw();
 		getDirection();
 	});
 	function getBlob(id){
