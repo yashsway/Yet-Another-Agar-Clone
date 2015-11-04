@@ -12,22 +12,23 @@ $(document).ready(function(){
 
 	function drawGrid(){
 		console.log("called")
-		context.fillStyle="black";
-		for (var i=0; i<width; i+=20){
+		context.strokeStyle="#D3D3D3";
+		//draw vertical lines
+		for (var i=0; i<width; i+=50){
 			context.beginPath();
 			context.moveTo(0, i);
 			context.lineTo(height, i);
 			context.stroke();
 			context.closePath();
 		}
-		for (var j=0; j<height; j+=20){
+		//draw horizontal lines
+		for (var j=0; j<height; j+=50){
 			context.beginPath();
-			context.moveTo(0, i);
-			context.lineTo(width, i);
+			context.moveTo(j, 0);
+			context.lineTo(j, width);
 			context.stroke();
 			context.closePath();
 		}
-	}
 
 	function drawCircle(x, y, radius, color){
 		context.fillStyle=color;
