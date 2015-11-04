@@ -1,12 +1,33 @@
 $(document).ready(function(){
-	// var socket = io();
+	//var socket = io();
 	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var canvas = document.getElementById("agarCanvas");
 	var context = canvas.getContext("2d");
+	var width = canvas.width;
+	var height = canvas.height;
 	var mouse = {x:0, y:0};
 	var blobs;
 	var blobId;
 	//hi
+
+	function drawGrid(){
+		console.log("called")
+		context.fillStyle="black";
+		for (var i=0; i<width; i+=20){
+			context.beginPath();
+			context.moveTo(0, i);
+			context.lineTo(height, i);
+			context.stroke();
+			context.closePath();
+		}
+		for (var j=0; j<height; j+=20){
+			context.beginPath();
+			context.moveTo(0, i);
+			context.lineTo(width, i);
+			context.stroke();
+			context.closePath();
+		}
+	}
 
 	function drawCircle(x, y, radius, color){
 		context.fillStyle=color;
@@ -42,6 +63,7 @@ $(document).ready(function(){
 	socket.on('ready',function(response){
 		blobs = response[0];
 		blobId = response[1];
+		drawGrid();
 		drawPlayers(blobs);
 		window.addEventListener('mousemove', mousePos);
 	});
