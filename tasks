@@ -36,12 +36,12 @@ must f/o organization of modules first
  	- Pert chart
  	- Gantt chart
 
-AGAR.IO MODULE OUTLINE :^)
+AGAR.IO CODING TASKS :^)
 
 - fixed speed (proportional to weight) ~ yash
 - food generation ~ yash
 - eating ~ jemar
-- center-view for each player ~ vicky
+✓ center-view for each player ~ vicky
 ✓ players can't move outside canvas ~ jemar
 - join screen ~ yash/jemar
 - names ~ vicky
@@ -52,7 +52,15 @@ AGAR.IO MODULE OUTLINE :^)
 - spike circles (maybe)
 - leaderboard (maybe)
 
+MODULE HIERARCHY
 
-
-aka.ms/onlineresume
-
+HARDWARE HIDING MODULES (operating system)
+BEHAVIOUR HIDING MODULES (view and controller)
+- Game Input Module
+- Game Drawing Module
+- Window Input Module (meaning start game/u lost windows)
+- Window Drawing Module
+SOFTWARE DECISION MODULES (model)
+- Entity Location Module (calculating locations of players + food)
+- Food Generating Module
+- Player Data Module
