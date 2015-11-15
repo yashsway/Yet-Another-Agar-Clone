@@ -30,13 +30,14 @@ module.exports.getRouter = function(io){
 		socket.on('objUpdate',function(obj){
 			for (var i = 0; i < blobs.length; i++){
 				if (blobs[i].id == obj.id){
-					var dx = obj.dir.dx
-					var dy = obj.dir.dy
-					if (0 <= blobs[i].x + dx*percent && 3000 >= blobs[i].x + dx*percent){
-						blobs[i].x = blobs[i].x + dx*percent;
+					var dx = obj.dir.dx;
+					var dy = obj.dir.dy;
+					var speed = obj.speed;
+					if (0 <= blobs[i].x + dx/speed && 3000 >= blobs[i].x + dx/speed){
+						blobs[i].x = blobs[i].x + dx/speed;
 					}
-					if (0 <= blobs[i].y + dy*percent && 3000 >= blobs[i].y + dy*percent){
-						blobs[i].y = blobs[i].y + dy*percent;
+					if (0 <= blobs[i].y + dy/speed && 3000 >= blobs[i].y + dy/speed){
+						blobs[i].y = blobs[i].y + dy/speed;
 					}
 					break;
 
