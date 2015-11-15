@@ -61,7 +61,7 @@ $(document).ready(function(){
 			dir.dx = mouse.x - canvW/2;
 			dir.dy = mouse.y - canvH/2;
 			var thisBlob = getBlob(blobId);
-			var newObj = {id: thisBlob.id, x: thisBlob.x, y: thisBlob.y, mass: thisBlob.mass, color: thisBlob.color, dir: dir};
+			var newObj = {id: thisBlob.id, x: thisBlob.x, y: thisBlob.y, mass: thisBlob.mass, color: thisBlob.color, dir: dir, speed: 10};
 			socket.emit('objUpdate',newObj);
 		}
 	}
