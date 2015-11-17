@@ -111,9 +111,6 @@ module.exports.getRouter = function(io){
 	//checks if a is inside b
 	var inside = function(a,b){
 		var distance = Math.sqrt(Math.pow((b.x - a.x),2) + Math.pow((b.y - a.y),2));
-		console.log("Distance: " + distance);
-		console.log("Difference: " + (b.mass - a.mass));
-		console.log("Inside: " + (distance < b.mass - a.mass));
 		if (distance < b.mass - a.mass){
 			return true;
 		}

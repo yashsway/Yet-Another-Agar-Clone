@@ -11,6 +11,7 @@ $(document).ready(function(){
 	var canvH = canvas.height;
 	var mouse = {x:0, y:0};
 	var dir = {dx:0,dy:0};
+	var foods;
 	var blobs;
 	var blobId;
 	var alive;
@@ -24,7 +25,7 @@ $(document).ready(function(){
 		for (var i= 0; i<=gameW; i+=50){
 			context.beginPath();
 			context.moveTo(0, i);
-			context.lineTo(canvH, i);
+			context.lineTo(gameH, i);
 			context.stroke();
 			context.closePath();
 		}
@@ -33,7 +34,7 @@ $(document).ready(function(){
 		for (var j=0; j<=gameH; j+=50){
 			context.beginPath();
 			context.moveTo(j, 0);
-			context.lineTo(j, canvW);
+			context.lineTo(j, gameW);
 			context.stroke();
 			context.closePath();
 		}
@@ -84,7 +85,13 @@ $(document).ready(function(){
 		}
 	}
 
-	function drawFrame(players){
+	function drawFoods(foods){
+		for (i = 0; i < foods.length ; i++){
+			drawCircle(foods[i].x, foods[i].y, foods[i].mass, foods[i].color);
+		}
+	}
+
+	function drawFrame(players, foods){
 		if (alive){
 			var thisBlob = getBlob(blobId);
 			context.setTransform(1,0,0,1,0,0);
@@ -93,6 +100,7 @@ $(document).ready(function(){
 	    	viewY = -thisBlob.y + canvH/2
 	    	context.translate( viewX, viewY );
 	    	drawGrid();
+	    	drawFoods(foods);
 			drawPlayers(players);
 	    }
 	    else {
@@ -103,8 +111,9 @@ $(document).ready(function(){
 	}
 
 	socket.on('ready',function(response){
-		blobs = response[0];
-		blobId = response[1];
+		blobs = response.blobs;
+		blobId = response.blobId;
+		foods = response.foods;
 		socket.on('death'+blobId,function(){
 			console.log("Looks like we died..");
 			alive = false;
@@ -117,9 +126,12 @@ $(document).ready(function(){
 	socket.on('update',function(response){
 		blobs = response.blobs;
 		foods = response.foods;
-		drawFrame(blobs);
+		console.log("hi");
+		console.log(foods);
+		drawFrame(blobs, foods);
 		getDirection();
 	});
+
 	function getBlob(id){
 		for (var i = 0; i < blobs.length; i++){
 			if (blobs[i].id == id){
