@@ -1,6 +1,6 @@
 $(document).ready(function(){
-	// var socket = io();
-	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
+	var socket = io();
+	// var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var connected = false;
 	var canvas = document.getElementById("agarCanvas");
 	canvas.width = window.innerWidth;
@@ -145,6 +145,7 @@ $(document).ready(function(){
 	    	context.clearRect(0,0,canvW,canvH);
 	    	context.translate( viewX, viewY );
 	    	drawGrid();
+	    	drawFoods(foods);
 			drawPlayers(players);
 	    }
 	}
@@ -188,10 +189,11 @@ $(document).ready(function(){
 	socket.on('update',function(response){
 		if (connected){
 			blobs = response.blobs;
+			console.log(blobs);
 			foods = response.foods;
 			drawFrame(blobs, foods);
 			getDirection();
-			if(blobId!=undefined){
+			if(alive){
 				updateScore();
 			}
 		}
