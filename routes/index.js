@@ -10,7 +10,6 @@ module.exports.getRouter = function(io){
 	var blobs = [];
 	var foods = [];
 	var foodAmount = (3000*3000)/1000;
-	var foodSize = 5;
 	var blobCount = 0;
 	var allColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
 	var percent = 0.1;
@@ -58,7 +57,7 @@ module.exports.getRouter = function(io){
 	});
 	var generateFood = function(){
 		var loc = generateLoc();
-		return {x: loc.x, y: loc.y, color: allColors[Math.floor(Math.random() * (allColors.length))]};
+		return {x: loc.x, y: loc.y, mass: 5, color: allColors[Math.floor(Math.random() * (allColors.length))]};
 	};
 	var generateLoc = function(){
 		var good = true;
@@ -85,8 +84,8 @@ module.exports.getRouter = function(io){
 			}
 			for (var k = 0; k < foods.length; k++) {
 				if (!foods.eaten && inside(foods[k],blobs[i])){
-					blobs[i].mass = foodSize;
-					foods[i].eaten = true;
+					blobs[i].mass = foods[k].mass;
+					foods[k].eaten = true;
 				}
 			}
 		}
