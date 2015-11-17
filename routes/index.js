@@ -8,15 +8,17 @@ module.exports.getRouter = function(io){
 	});
 
 	var blobs = [];
+	var foods = [];
+	var foodAmount = (3000*3000)/1000;
 	var blobCount = 0;
-	var blobColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
+	var allColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
 	var percent = 0.1;
 
 	io.on('connection', function(socket){
 		console.log("Blob " + blobCount + " connected");
 		var newId = blobCount++;
-
-		blobs[blobs.length] = {x: Math.floor((Math.random() * 3000) + 0), y: Math.floor((Math.random() * 3000) + 0), mass: Math.floor((Math.random() * 20) + 5), color: blobColors[newId % blobColors.length], id: newId};
+		var loc = generateLoc();
+		blobs[blobs.length] = {x: loc.x, y: loc.y, mass: Math.floor((Math.random() * 20) + 5), color: allColors[newId % allColors.length], id: newId, name: "Mr.Duck"};
 		var response = [blobs, newId];
 		socket.emit('ready',response);
 		socket.on('disconnect',function(){
@@ -53,11 +55,26 @@ module.exports.getRouter = function(io){
 			}
 		});
 	});
+	var generateFood = function(){
+		var loc = generateLoc();
+		return {x: loc.x, y: loc.y, mass: 5, color: allColors[Math.floor(Math.random() * (allColors.length))]};
+	};
+	var generateLoc = function(){
+		var good = true;
+		do{
+			loc = {x: Math.floor((Math.random() * 3000) + 0), y: Math.floor((Math.random() * 3000) + 0)};
+			for (var i = 0; i < blobs.length; i++){
+				if (inside(loc,blobs[i])){
+					good = false;
+				}
+			}
+		}while(!good);
+		return loc;
+	};
 	// O(n^2) should probably improve
 	var checkEating = function(){
 		for (var i = 0; i < blobs.length; i++) {
 			for (var j = 0; j < blobs.length; j++) {
-				console.log(blobs[i].id + " will eat " + blobs[j].id + ": " + (i != j && !blobs[i].eaten && !blobs[j].eaten && inside(blobs[j],blobs[i])));
 				// Checking for the eating of blobs that haven't already been eaten.
 				if (i != j && !blobs[i].eaten && !blobs[j].eaten && inside(blobs[j],blobs[i])){
 					console.log("Doing eating of " + blobs[j].id  + " by " + blobs[i].id);
@@ -65,17 +82,33 @@ module.exports.getRouter = function(io){
 					blobs[j].eaten = true; //Mark blob for deletion
 				}
 			}
+			for (var k = 0; k < foods.length; k++) {
+				if (!foods.eaten && inside(foods[k],blobs[i])){
+					blobs[i].mass += foods[k].mass;
+					foods[k].eaten = true;
+				}
+			}
 		}
-		// Remove eaten blobs (we loop in reverse to avoid the trouble of index changes)
-		for (var k = blobs.length - 1; k >= 0; k--) {
-			if (blobs[k].eaten){
-				console.log("Killing blob: " + blobs[k].id);
-				io.emit('death'+blobs[k].id,blobs[k]);
-				blobs.splice(k,1);
+		//Remove eaten blobs (we loop in reverse to avoid the trouble of index changes)
+		for (var l = blobs.length - 1; l >= 0; l--) {
+			if (blobs[l].eaten){
+				// console.log("Killing blob: " + blobs[l].id);
+				io.emit('death'+blobs[l].id,blobs[l]);
+				blobs.splice(l,1);
+			}
+		}
+		for (var m = foods.length - 1; m >= 0; m--) {
+			if (foods[m].eaten){
+				foods.splice(m,1);
 			}
 		}
 	};
-	//checks if blob a is inside blob b
+	var fillFoods = function(){
+		for (var i = foods.length; i < foodAmount; i++) {
+			foods[i] = generateFood();
+		}
+	};
+	//checks if a is inside b
 	var inside = function(a,b){
 		var distance = Math.sqrt(Math.pow((b.x - a.x),2) + Math.pow((b.y - a.y),2));
 		console.log("Distance: " + distance);
@@ -87,12 +120,14 @@ module.exports.getRouter = function(io){
 		return false;
 	};
 	//This is our 'game loop' implemented as a callback loop.
-	var sendBlobs = function(){
+	var sendData = function(){
 		checkEating();
-		io.emit('update',blobs);
-		setTimeout(sendBlobs,20);
+		fillFoods();
+		io.emit('update',{blobs: blobs, foods: foods});
+		setTimeout(sendData,20);
 	};
-	sendBlobs();
+	fillFoods();
+	sendData();
 
 	return router;
 };
