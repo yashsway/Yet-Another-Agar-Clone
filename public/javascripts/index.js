@@ -81,6 +81,20 @@ $(document).ready(function(){
 		return document.hidden || document.msHidden || document.webkitHidden || document.mozHidden;
 	}
 
+	function isInView(obj, xMin, xMax, yMin, yMax){
+		var r = obj.mass;
+		if (obj.x+r < xMax){
+			if (obj.x+r > xMin){
+				if (obj.y < yMax){
+					if (obj.y > yMin){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	function getDirection(e){
 		if (!isPageHidden() && alive){
 			dir.dx = mouse.x - canvW/2;
@@ -101,7 +115,9 @@ $(document).ready(function(){
 	function drawFoods(food){
 		console.log(food);
 		for (i = 0; i < food.length ; i++){
-			drawCircle(food[i].x, food[i].y, food[i].mass, food[i].color);
+			if (isInView(food[i], viewX, viewX+canvW, viewY, viewY+canvW)){
+				drawCircle(food[i].x, food[i].y, food[i].mass, food[i].color);
+			}
 		}
 	}
 
