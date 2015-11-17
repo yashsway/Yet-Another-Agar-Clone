@@ -19,7 +19,7 @@ module.exports.getRouter = function(io){
 		var newId = blobCount++;
 		var loc = generateLoc();
 		blobs[blobs.length] = {x: loc.x, y: loc.y, mass: Math.floor((Math.random() * 20) + 5), color: allColors[newId % allColors.length], id: newId, name: "Mr.Duck"};
-		var response = [blobs, newId];
+		var response = {blobs: blobs, blodId: newId, foods: foods};
 		socket.emit('ready',response);
 		socket.on('disconnect',function(){
 			for (var i = 0; i < blobs.length;i++){
