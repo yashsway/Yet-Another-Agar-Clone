@@ -23,7 +23,7 @@ module.exports.getRouter = function(io){
 		socket.on('playerReady',function(data){
 			var newId = blobCount++;
 			var loc = generateLoc();
-			blobs[blobs.length] = {x: loc.x, y: loc.y, mass: 1256,radius: convertToRadius(1256), color: allColors[newId % allColors.length], id: newId, name: data.name};
+			blobs[blobs.length] = {x: loc.x, y: loc.y, mass: 1256,radius: convertToRadius(1256), color: allColors[newId % allColors.length], id: newId, name: data.name, score: 0};
 			var response = {blobs: blobs, blobId: newId, foods: foods};
 			socket.emit('ready',response);
 			socket.on('disconnect',function(){
@@ -41,17 +41,13 @@ module.exports.getRouter = function(io){
 					var dx = obj.dir.dx;
 					var dy = obj.dir.dy;
 					var dist = Math.sqrt(dx*dx+dy*dy);
-					//var slope = dy/dx;
-					//var intercept = obj.y - (slope*obj.x);
 					var speed = 12-(((obj.mass*24)/obj.radius)/1000);
 					if(dist>5){
 						if (0 <= blobs[i].x + dx/speed && fieldW >= blobs[i].x + dx/speed){
 							blobs[i].x = blobs[i].x + (dx/dist)*speed;
-							//blobs[i].x = ((blobs[i].x+speed)-intercept)/slope;
 						}
 						if (0 <= blobs[i].y + dy/speed && fieldH >= blobs[i].y + dy/speed){
 							blobs[i].y = blobs[i].y + (dy/dist)*speed;
-							//blobs[i].y = slope*(blobs[i].y+speed)+intercept;
 						}
 					}
 					break;
@@ -87,6 +83,7 @@ module.exports.getRouter = function(io){
 				// Checking for the eating of blobs that haven't already been eaten.
 				if (i != j && !blobs[i].eaten && !blobs[j].eaten && inside(blobs[j],blobs[i])){
 					console.log("Doing eating of " + blobs[j].id  + " by " + blobs[i].id);
+					blobs[i].score += blobs[j].radius;
 					blobs[i].mass += blobs[j].mass;
 					blobs[i].radius = convertToRadius(blobs[i].mass);
 					blobs[j].eaten = true; //Mark blob for deletion
@@ -94,6 +91,7 @@ module.exports.getRouter = function(io){
 			}
 			for (var k = 0; k < foods.length; k++) {
 				if (!foods.eaten && inside(foods[k],blobs[i])){
+					blobs[i].score += foods[k].radius;
 					blobs[i].mass += foods[k].mass;
 					blobs[i].radius = convertToRadius(blobs[i].mass);
 					foods[k].eaten = true;
