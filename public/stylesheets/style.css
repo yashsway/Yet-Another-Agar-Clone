@@ -29,8 +29,8 @@ a {
 }
 /* Player welcome screen */
 #startScreen {
-	left: 40%;
-	top: 40%;
+	left: 35%;
+	top: 35%;
 	width: 350px;
 	background-color: salmon;
 	position: absolute;
@@ -50,7 +50,8 @@ a {
 	display: none;
 }
 #gameHelper {
-	 position: fixed;
+	  top: 0px;
+	  position: fixed;
     z-index: 100;
     height: 40px;
     width: 100%;
