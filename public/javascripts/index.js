@@ -20,18 +20,20 @@ $(document).ready(function(){
 	function drawGrid(){
 		context.strokeStyle="#d3d3d3";
 		//vertical
-		for (var i=-canvW; i<gameW+canvW; i+=50){
+		//for (var i=-canvW; i<gameW+canvW; i+=50){
+		for (var i= 0; i<=gameW; i+=50){
 			context.beginPath();
-			context.moveTo(-canvH, i);
-			context.lineTo(gameH+canvH, i);
+			context.moveTo(0, i);
+			context.lineTo(canvH, i);
 			context.stroke();
 			context.closePath();
 		}
 		///horizontal
-		for (var j=-canvH; j<gameH+canvH; j+=50){
+		//for (var j=-canvH; j<gameH+canvH; j+=50){
+		for (var j=0; j<=gameH; j+=50){
 			context.beginPath();
-			context.moveTo(j, -canvW);
-			context.lineTo(j, gameW+canvW);
+			context.moveTo(j, 0);
+			context.lineTo(j, canvW);
 			context.stroke();
 			context.closePath();
 		}
@@ -45,6 +47,15 @@ $(document).ready(function(){
 		context.closePath();
 	}
 
+	function drawName(x, y, name){
+		context.font = "bold 30px Arial";
+		context.fillStyle = "white";
+		context.textAlign = "center";
+		context.fillText(name,x,y+10);
+		context.lineWidth= 0.5;
+		context.strokeStyle = "black";
+		context.strokeText(name,x,y+10);
+	}
 
 	function mousePos(e){
 		var rect = canvas.getBoundingClientRect();
@@ -69,6 +80,7 @@ $(document).ready(function(){
 	function drawPlayers(players){
 		for (i = 0; i < players.length ; i++){
 			drawCircle(players[i].x, players[i].y, players[i].mass, players[i].color);
+			drawName(players[i].x, players[i].y, "bloop");
 		}
 	}
 
@@ -103,7 +115,8 @@ $(document).ready(function(){
 	});
 
 	socket.on('update',function(response){
-		blobs = response;
+		blobs = response.blobs;
+		foods = response.foods;
 		drawFrame(blobs);
 		getDirection();
 	});
