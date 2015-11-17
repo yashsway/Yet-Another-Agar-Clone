@@ -22,14 +22,14 @@ module.exports.getRouter = function(io){
 			blobs[blobs.length] = {x: loc.x, y: loc.y, mass: Math.floor((Math.random() * 20) + 5), color: allColors[newId % allColors.length], id: newId, name: data.name};
 			var response = {blobs: blobs, blobId: newId, foods: foods};
 			socket.emit('ready',response);
-		});
-		socket.on('disconnect',function(){
-			for (var i = 0; i < blobs.length;i++){
-				if (blobs[i].id == newId){
-					blobs.splice(i,1);
-					console.log("Blob " + newId + " disconnected and removed.");
+			socket.on('disconnect',function(){
+				for (var i = 0; i < blobs.length;i++){
+					if (blobs[i].id == newId){
+						blobs.splice(i,1);
+						console.log("Blob " + newId + " disconnected and removed.");
+					}
 				}
-			}
+			});
 		});
 		socket.on('objUpdate',function(obj){
 			for (var i = 0; i < blobs.length; i++){
