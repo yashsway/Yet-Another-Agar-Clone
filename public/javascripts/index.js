@@ -6,8 +6,8 @@ $(document).ready(function(){
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	var context = canvas.getContext("2d");
-	var gameW = 1500; //width
-	var gameH = 1500; //height
+	var gameW; //width
+	var gameH; //height
 	var canvW = canvas.width;
 	var canvH = canvas.height;
 	var mouse = {x:0, y:0};
