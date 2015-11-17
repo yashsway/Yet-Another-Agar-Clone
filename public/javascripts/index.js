@@ -18,7 +18,7 @@ $(document).ready(function(){
 	var alive;
 	var viewX=0;
 	var viewY=0;
-	var score;
+	var score=0;
 
 	function getPlayerName(){
 		$("#startScreen").show();
@@ -178,17 +178,6 @@ $(document).ready(function(){
 		drawFrame(blobs);
 		window.addEventListener('mousemove', mousePos);
 	});
-
-	socket.on('update',function(response){
-		if (connected){
-			blobs = response.blobs;
-			foods = response.foods;
-			drawFrame(blobs, foods);
-			getDirection();
-			updateScore();
-		}
-	});
-
 	function getBlob(id){
 		for (var i = 0; i < blobs.length; i++){
 			if (blobs[i].id == id){
@@ -196,4 +185,15 @@ $(document).ready(function(){
 			}
 		}
 	}
+	socket.on('update',function(response){
+		if (connected){
+			blobs = response.blobs;
+			foods = response.foods;
+			drawFrame(blobs, foods);
+			getDirection();
+			if(blobId!=undefined){
+				updateScore();
+			}
+		}
+	});
 });
