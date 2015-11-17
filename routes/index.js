@@ -32,19 +32,19 @@ module.exports.getRouter = function(io){
 				if (blobs[i].id == obj.id){
 					var dx = obj.dir.dx;
 					var dy = obj.dir.dy;
-					//var dx = mouseX-obj.x;
-					//var dy = mouseY-obj.y;
 					var dist = Math.sqrt(dx*dx+dy*dy);
 					//var slope = dy/dx;
 					//var intercept = obj.y - (slope*obj.x);
 					var speed = obj.speed;
-					if (0 <= blobs[i].x + dx/speed && 3000 >= blobs[i].x + dx/speed){
-						blobs[i].x = blobs[i].x + (dx/dist)*speed;
-						//blobs[i].x = ((blobs[i].x+speed)-intercept)/slope;
-					}
-					if (0 <= blobs[i].y + dy/speed && 3000 >= blobs[i].y + dy/speed){
-						blobs[i].y = blobs[i].y + (dy/dist)*speed;
-						//blobs[i].y = slope*(blobs[i].y+speed)+intercept;
+					if(dist>5){
+						if (0 <= blobs[i].x + dx/speed && 3000 >= blobs[i].x + dx/speed){
+							blobs[i].x = blobs[i].x + (dx/dist)*speed;
+							//blobs[i].x = ((blobs[i].x+speed)-intercept)/slope;
+						}
+						if (0 <= blobs[i].y + dy/speed && 3000 >= blobs[i].y + dy/speed){
+							blobs[i].y = blobs[i].y + (dy/dist)*speed;
+							//blobs[i].y = slope*(blobs[i].y+speed)+intercept;
+						}
 					}
 					break;
 
