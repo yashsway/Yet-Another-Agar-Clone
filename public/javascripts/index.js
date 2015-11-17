@@ -18,6 +18,19 @@ $(document).ready(function(){
 	var viewX=0;
 	var viewY=0;
 
+	function getPlayerName(){
+		$("#startScreen").show();
+		$("#start").on('click',function(){
+			var player = {name:$("#pName").val()};
+			console.log(player.name);
+			if(player.name!=''){
+				socket.emit('playerReady',player);
+				$("#startScreen").hide();
+			}
+		});
+	}
+	getPlayerName();
+
 	function drawGrid(){
 		context.strokeStyle="#d3d3d3";
 		//vertical
@@ -94,11 +107,8 @@ $(document).ready(function(){
 
 	function drawPlayers(players){
 		for (i = 0; i < players.length ; i++){
-			if (isInView(players[i], viewX, viewX+canvW, viewY, viewY+canvW)){
-				console.log(viewX);
-				drawCircle(players[i].x, players[i].y, players[i].mass, players[i].color);
-				drawName(players[i].x, players[i].y, "bloop");
-			}
+			drawCircle(players[i].x, players[i].y, players[i].mass, players[i].color);
+			drawName(players[i].x, players[i].y, players[i].name);
 		}
 	}
 
@@ -120,7 +130,7 @@ $(document).ready(function(){
 	    	viewY = -thisBlob.y + canvH/2
 	    	context.translate( viewX, viewY );
 	    	drawGrid();
-	    	drawFoods(foods);
+	    	//drawFoods(foods);
 			drawPlayers(players);
 	    }
 	    else {
@@ -149,8 +159,8 @@ $(document).ready(function(){
 	socket.on('update',function(response){
 		blobs = response.blobs;
 		foods = response.foods;
-		console.log("hi");
-		console.log(foods);
+		// console.log("hi");
+		// console.log(foods);
 		drawFrame(blobs, foods);
 		getDirection();
 	});
