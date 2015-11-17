@@ -10,6 +10,7 @@ module.exports.getRouter = function(io){
 	var blobs = [];
 	var foods = [];
 	var foodAmount = (3000*3000)/10000;
+	var foodMass = 200;
 	var blobCount = 0;
 	var allColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
 	var percent = 0.1;
@@ -19,7 +20,7 @@ module.exports.getRouter = function(io){
 		socket.on('playerReady',function(data){
 			var newId = blobCount++;
 			var loc = generateLoc();
-			blobs[blobs.length] = {x: loc.x, y: loc.y, mass: Math.floor((Math.random() * 20) + 5), color: allColors[newId % allColors.length], id: newId, name: data.name};
+			blobs[blobs.length] = {x: loc.x, y: loc.y, mass: 1256,radius: convertToRadius(1256), color: allColors[newId % allColors.length], id: newId, name: data.name};
 			var response = {blobs: blobs, blobId: newId, foods: foods};
 			socket.emit('ready',response);
 			socket.on('disconnect',function(){
@@ -57,9 +58,12 @@ module.exports.getRouter = function(io){
 			}
 		});
 	});
+	var convertToRadius = function(mass){
+		return Math.floor(Math.sqrt(mass/Math.PI));
+	};
 	var generateFood = function(){
 		var loc = generateLoc();
-		return {x: loc.x, y: loc.y, mass: 5, color: allColors[Math.floor(Math.random() * (allColors.length))]};
+		return {x: loc.x, y: loc.y, mass: foodMass, radius: convertToRadius(foodMass), color: allColors[Math.floor(Math.random() * (allColors.length))]};
 	};
 	var generateLoc = function(){
 		var good = true;
@@ -81,12 +85,14 @@ module.exports.getRouter = function(io){
 				if (i != j && !blobs[i].eaten && !blobs[j].eaten && inside(blobs[j],blobs[i])){
 					console.log("Doing eating of " + blobs[j].id  + " by " + blobs[i].id);
 					blobs[i].mass += blobs[j].mass;
+					blobs[i].radius = convertToRadius(blobs[i].mass);
 					blobs[j].eaten = true; //Mark blob for deletion
 				}
 			}
 			for (var k = 0; k < foods.length; k++) {
 				if (!foods.eaten && inside(foods[k],blobs[i])){
 					blobs[i].mass += foods[k].mass;
+					blobs[i].radius = convertToRadius(blobs[i].mass);
 					foods[k].eaten = true;
 				}
 			}
@@ -113,7 +119,7 @@ module.exports.getRouter = function(io){
 	//checks if a is inside b
 	var inside = function(a,b){
 		var distance = Math.sqrt(Math.pow((b.x - a.x),2) + Math.pow((b.y - a.y),2));
-		if (distance < b.mass - a.mass){
+		if (distance < b.radius - a.radius){
 			return true;
 		}
 		return false;

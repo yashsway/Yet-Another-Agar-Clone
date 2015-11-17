@@ -83,7 +83,7 @@ $(document).ready(function(){
 	}
 
 	function isInView(obj, xMin, xMax, yMin, yMax){
-		var r = obj.mass;
+		var r = obj.radius;
 		if (obj.x+r < xMax){
 			if (obj.x+r > xMin){
 				if (obj.y < yMax){
@@ -101,7 +101,7 @@ $(document).ready(function(){
 			dir.dx = mouse.x - canvW/2;
 			dir.dy = mouse.y - canvH/2;
 			var thisBlob = getBlob(blobId);
-			var newObj = {id: thisBlob.id, x: thisBlob.x, y: thisBlob.y, mass: thisBlob.mass, color: thisBlob.color, dir: dir, speed: 10};
+			var newObj = {id: thisBlob.id, x: thisBlob.x, y: thisBlob.y, radius: thisBlob.radius, color: thisBlob.color, dir: dir, speed: 10};
 			socket.emit('objUpdate',newObj);
 		}
 	}
@@ -109,7 +109,7 @@ $(document).ready(function(){
 	function drawPlayers(players){
 		for (i = 0; i < players.length ; i++){
 			//if (isInView(players[i], viewX, viewX+canvW, viewY, viewY+canvW)){
-			drawCircle(players[i].x, players[i].y, players[i].mass, players[i].color);
+			drawCircle(players[i].x, players[i].y, players[i].radius, players[i].color);
 			drawName(players[i].x, players[i].y, players[i].name);//}
 		}
 	}
@@ -118,7 +118,7 @@ $(document).ready(function(){
 		console.log(food);
 		for (i = 0; i < food.length ; i++){
 			//if (isInView(food[i], viewX, viewX+canvW, viewY, viewY+canvW)){
-				drawCircle(food[i].x, food[i].y, food[i].mass, food[i].color);
+				drawCircle(food[i].x, food[i].y, food[i].radius, food[i].color);
 			
 		}
 	}
