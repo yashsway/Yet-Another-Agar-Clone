@@ -35,7 +35,11 @@ a {
 	background-color: salmon;
 	position: absolute;
 	z-index: 2;
+	display:none;
 }
 #pName {
 	width: 100px;
+}
+#deathScreen {
+	display: none;
 }
