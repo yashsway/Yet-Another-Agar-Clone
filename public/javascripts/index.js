@@ -18,6 +18,17 @@ $(document).ready(function(){
 	var viewX=0;
 	var viewY=0;
 
+	function getPlayerName(){
+		$("#startScreen").show();
+		$("#start").on('click',function(){
+			var player = {name:$("#pName").text()};
+			if(player.name!=''){
+				socket.emit('playerReady',player);
+			}
+		});
+	}
+	getPlayerName();
+
 	function drawGrid(){
 		context.strokeStyle="#d3d3d3";
 		//vertical
@@ -101,7 +112,7 @@ $(document).ready(function(){
 	    	viewY = -thisBlob.y + canvH/2
 	    	context.translate( viewX, viewY );
 	    	drawGrid();
-	    	drawFoods(foods);
+	    	//drawFoods(foods);
 			drawPlayers(players);
 	    }
 	    else {

@@ -35,7 +35,7 @@ a {
 	background-color: salmon;
 	position: absolute;
 	z-index: 2;
-	/*display:none;*/
+	display:none;
 }
 #pName {
 	width: 100px;
@@ -58,6 +58,7 @@ a {
     background-color: #2C3E50;
     opacity: 0.8;
     clear: both;
+		display: none;
 }
 #gameHelper > #controls {
     float: left;
