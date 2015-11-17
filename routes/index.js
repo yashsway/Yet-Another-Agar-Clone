@@ -19,10 +19,10 @@ module.exports.getRouter = function(io){
 
 	io.on('connection', function(socket){
 		console.log("Blob " + blobCount + " connected");
-		socket.emit('init',{width: fieldW, height: fieldH});
+		var loc = generateLoc();
+		socket.emit('init',{width: fieldW, height: fieldH, x: loc.x, y: loc.y});
 		socket.on('playerReady',function(data){
 			var newId = blobCount++;
-			var loc = generateLoc();
 			blobs[blobs.length] = {x: loc.x, y: loc.y, mass: 1256,radius: convertToRadius(1256), color: allColors[newId % allColors.length], id: newId, name: data.name, score: 0};
 			var response = {blobs: blobs, blobId: newId, foods: foods};
 			socket.emit('ready',response);
