@@ -84,7 +84,7 @@ module.exports.getRouter = function(io){
 			}
 			for (var k = 0; k < foods.length; k++) {
 				if (!foods.eaten && inside(foods[k],blobs[i])){
-					blobs[i].mass = foods[k].mass;
+					blobs[i].mass += foods[k].mass;
 					foods[k].eaten = true;
 				}
 			}
