@@ -9,7 +9,7 @@ module.exports.getRouter = function(io){
 
 	var blobs = [];
 	var foods = [];
-	var foodAmount = (3000*3000)/1000;
+	var foodAmount = (3000*3000)/10000;
 	var blobCount = 0;
 	var allColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
 	var percent = 0.1;

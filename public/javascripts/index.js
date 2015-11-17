@@ -107,17 +107,18 @@ $(document).ready(function(){
 
 	function drawPlayers(players){
 		for (i = 0; i < players.length ; i++){
+			//if (isInView(players[i], viewX, viewX+canvW, viewY, viewY+canvW)){
 			drawCircle(players[i].x, players[i].y, players[i].mass, players[i].color);
-			drawName(players[i].x, players[i].y, players[i].name);
+			drawName(players[i].x, players[i].y, players[i].name);//}
 		}
 	}
 
 	function drawFoods(food){
 		console.log(food);
 		for (i = 0; i < food.length ; i++){
-			if (isInView(food[i], viewX, viewX+canvW, viewY, viewY+canvW)){
+			//if (isInView(food[i], viewX, viewX+canvW, viewY, viewY+canvW)){
 				drawCircle(food[i].x, food[i].y, food[i].mass, food[i].color);
-			}
+			
 		}
 	}
 
@@ -130,7 +131,7 @@ $(document).ready(function(){
 	    	viewY = -thisBlob.y + canvH/2
 	    	context.translate( viewX, viewY );
 	    	drawGrid();
-	    	//drawFoods(foods);
+	    	drawFoods(foods);
 			drawPlayers(players);
 	    }
 	    else {
