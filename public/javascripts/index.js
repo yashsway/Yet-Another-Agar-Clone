@@ -85,13 +85,14 @@ $(document).ready(function(){
 		}
 	}
 
-	function drawFoods(foods){
-		for (i = 0; i < foods.length ; i++){
-			drawCircle(foods[i].x, foods[i].y, foods[i].mass, foods[i].color);
+	function drawFoods(food){
+		console.log(food);
+		for (i = 0; i < food.length ; i++){
+			drawCircle(food[i].x, food[i].y, food[i].mass, food[i].color);
 		}
 	}
 
-	function drawFrame(players, foods){
+	function drawFrame(players, food){
 		if (alive){
 			var thisBlob = getBlob(blobId);
 			context.setTransform(1,0,0,1,0,0);
@@ -113,6 +114,7 @@ $(document).ready(function(){
 	socket.on('ready',function(response){
 		blobs = response.blobs;
 		blobId = response.blobId;
+		console.log(blobId);
 		foods = response.foods;
 		socket.on('death'+blobId,function(){
 			//Display the death screen
