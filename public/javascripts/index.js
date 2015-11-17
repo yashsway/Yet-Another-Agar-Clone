@@ -1,12 +1,13 @@
 $(document).ready(function(){
 	var socket = io();
-	//var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
+	// var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
+	var connected = false;
 	var canvas = document.getElementById("agarCanvas");
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	var context = canvas.getContext("2d");
-	var gameW = 3000; //width
-	var gameH = 3000; //height
+	var gameW = 1500; //width
+	var gameH = 1500; //height
 	var canvW = canvas.width;
 	var canvH = canvas.height;
 	var mouse = {x:0, y:0};
@@ -144,7 +145,11 @@ $(document).ready(function(){
 			drawPlayers(players);
 	    }
 	}
-
+	socket.on('init',function(data){
+		connected = true;
+		gameW = data.width;
+		gameH = data.height;
+	});
 	socket.on('ready',function(response){
 		blobs = response.blobs;
 		blobId = response.blobId;
@@ -165,10 +170,12 @@ $(document).ready(function(){
 	});
 
 	socket.on('update',function(response){
-		blobs = response.blobs;
-		foods = response.foods;
-		drawFrame(blobs, foods);
-		getDirection();
+		if (connected){
+			blobs = response.blobs;
+			foods = response.foods;
+			drawFrame(blobs, foods);
+			getDirection();
+		}
 	});
 
 	function getBlob(id){
