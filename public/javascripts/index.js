@@ -62,7 +62,7 @@ $(document).ready(function(){
 	function drawCircle(x, y, radius, color){
 		context.fillStyle=color;
 		context.beginPath();
-		context.arc(x, y, radius/2, 0, 2*Math.PI);
+		context.arc(x, y, radius, 0, 2*Math.PI);
 		context.fill();
 		context.closePath();
 	}
@@ -106,7 +106,7 @@ $(document).ready(function(){
 			dir.dx = mouse.x - canvW/2;
 			dir.dy = mouse.y - canvH/2;
 			var thisBlob = getBlob(blobId);
-			var newObj = {id: thisBlob.id, x: thisBlob.x, y: thisBlob.y, radius: thisBlob.radius, color: thisBlob.color, dir: dir, speed: 10};
+			var newObj = {id: thisBlob.id, x: thisBlob.x, y: thisBlob.y, mass: thisBlob.mass, radius: thisBlob.radius, color: thisBlob.color, dir: dir, speed: 10};
 			socket.emit('objUpdate',newObj);
 		}
 	}
@@ -120,7 +120,6 @@ $(document).ready(function(){
 	}
 
 	function drawFoods(food){
-		console.log(food);
 		for (i = 0; i < food.length ; i++){
 			//if (isInView(food[i], viewX, viewX+canvW, viewY, viewY+canvW)){
 				drawCircle(food[i].x, food[i].y, food[i].radius, food[i].color);
@@ -168,8 +167,6 @@ $(document).ready(function(){
 	socket.on('update',function(response){
 		blobs = response.blobs;
 		foods = response.foods;
-		// console.log("hi");
-		// console.log(foods);
 		drawFrame(blobs, foods);
 		getDirection();
 	});

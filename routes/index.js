@@ -10,7 +10,7 @@ module.exports.getRouter = function(io){
 	var blobs = [];
 	var foods = [];
 	var foodAmount = (3000*3000)/10000;
-	var foodMass = 200;
+	var foodMass = 100;
 	var blobCount = 0;
 	var allColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
 	var percent = 0.1;
@@ -40,7 +40,7 @@ module.exports.getRouter = function(io){
 					var dist = Math.sqrt(dx*dx+dy*dy);
 					//var slope = dy/dx;
 					//var intercept = obj.y - (slope*obj.x);
-					var speed = (obj.speed/obj.mass)*30;
+					var speed = (obj.speed/(obj.mass/1000));
 					if(dist>5){
 						if (0 <= blobs[i].x + dx/speed && 3000 >= blobs[i].x + dx/speed){
 							blobs[i].x = blobs[i].x + (dx/dist)*speed;
