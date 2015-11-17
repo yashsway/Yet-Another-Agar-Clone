@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	// var socket = io();
+	//var socket = io();
 	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var connected = false;
 	var canvas = document.getElementById("agarCanvas");
@@ -159,6 +159,9 @@ $(document).ready(function(){
 		connected = true;
 		gameW = data.width;
 		gameH = data.height;
+		viewX = -data.x+ canvW/2;
+		viewY = -data.y+ canvH/2;
+		console.log(data.x);
 	});
 	socket.on('ready',function(response){
 		blobs = response.blobs;
