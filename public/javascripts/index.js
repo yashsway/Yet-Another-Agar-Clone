@@ -26,6 +26,7 @@ $(document).ready(function(){
 			if(player.name!=''){
 				socket.emit('playerReady',player);
 				$("#startScreen").hide();
+				$("#gameHelper").show();
 			}
 		});
 	}
