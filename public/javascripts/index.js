@@ -21,9 +21,11 @@ $(document).ready(function(){
 	function getPlayerName(){
 		$("#startScreen").show();
 		$("#start").on('click',function(){
-			var player = {name:$("#pName").text()};
+			var player = {name:$("#pName").val()};
+			console.log(player.name);
 			if(player.name!=''){
 				socket.emit('playerReady',player);
+				$("#startScreen").hide();
 			}
 		});
 	}
@@ -92,7 +94,7 @@ $(document).ready(function(){
 	function drawPlayers(players){
 		for (i = 0; i < players.length ; i++){
 			drawCircle(players[i].x, players[i].y, players[i].mass, players[i].color);
-			drawName(players[i].x, players[i].y, "bloop");
+			drawName(players[i].x, players[i].y, players[i].name);
 		}
 	}
 
@@ -141,8 +143,8 @@ $(document).ready(function(){
 	socket.on('update',function(response){
 		blobs = response.blobs;
 		foods = response.foods;
-		console.log("hi");
-		console.log(foods);
+		// console.log("hi");
+		// console.log(foods);
 		drawFrame(blobs, foods);
 		getDirection();
 	});

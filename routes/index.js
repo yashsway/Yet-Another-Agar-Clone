@@ -16,11 +16,13 @@ module.exports.getRouter = function(io){
 
 	io.on('connection', function(socket){
 		console.log("Blob " + blobCount + " connected");
-		var newId = blobCount++;
-		var loc = generateLoc();
-		blobs[blobs.length] = {x: loc.x, y: loc.y, mass: Math.floor((Math.random() * 20) + 5), color: allColors[newId % allColors.length], id: newId, name: "Mr.Duck"};
-		var response = {blobs: blobs, blobId: newId, foods: foods};
-		socket.emit('ready',response);
+		socket.on('playerReady',function(data){
+			var newId = blobCount++;
+			var loc = generateLoc();
+			blobs[blobs.length] = {x: loc.x, y: loc.y, mass: Math.floor((Math.random() * 20) + 5), color: allColors[newId % allColors.length], id: newId, name: data.name};
+			var response = {blobs: blobs, blobId: newId, foods: foods};
+			socket.emit('ready',response);
+		});
 		socket.on('disconnect',function(){
 			for (var i = 0; i < blobs.length;i++){
 				if (blobs[i].id == newId){
