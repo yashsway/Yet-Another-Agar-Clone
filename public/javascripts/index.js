@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	// var socket = io();
-	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000'); 
+	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var connected = false;
 	var canvas = document.getElementById("agarCanvas");
 	canvas.width = window.innerWidth;
