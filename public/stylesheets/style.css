@@ -3,7 +3,39 @@ html, body {
 	height:100%;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-
 a {
   color: #00B7FF;
+}
+/* Centering Hack */
+.content {
+    margin: 0px auto;
+    display: table;
+}
+.content div {
+    display: table-cell;
+}
+/* Top-Down Margin Spacing */
+.topDownSpacing {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.centerText {
+	text-align: center;
+}
+/* Canvas */
+#agarCanvas {
+	position: absolute;
+	z-index: -1;
+}
+/* Player welcome screen */
+#startScreen {
+	left: 40%;
+	top: 40%;
+	width: 350px;
+	background-color: salmon;
+	position: absolute;
+	z-index: 2;
+}
+#pName {
+	width: 100px;
 }

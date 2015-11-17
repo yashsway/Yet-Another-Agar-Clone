@@ -4,12 +4,24 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="stylesheets/style.css"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"/>
 		<title></title>
 	</head>
 	<body>
 
 	<canvas id="agarCanvas"></canvas>
-
+	<div class="content" id="startScreen">
+		<h3 class="content topDownSpacing centerText">Welcome to Agar.io!</h2>
+		<h6 class="content topDownSpacing centerText" style="margin-top: 20px">Enter a name below and press start to play</h6>
+		<input class="content topDownSpacing" type="text" id="pName">
+		<button class="content button-primary topDownSpacing" id="start">Start</button>
+	</div>
+	<div class="content" id="deathScreen">
+		<h3 class="content topDownSpacing centerText">Game over!</h2>
+		<h6 class="content topDownSpacing centerText" style="margin-top: 20px">Enter a name below and press start to play</h6>
+		<input class="content topDownSpacing" type="text" id="pName">
+		<button class="content button-primary topDownSpacing" id="start">Start</button>
+	</div>
 	<!-- Scripts -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
