@@ -29,6 +29,11 @@ $(document).ready(function(){
 				$("#gameHelper").show();
 			}
 		});
+		$(document).keypress(function(e){
+	    if (e.which == 13){
+	        $("#start").trigger('click');
+	    }
+		});
 	}
 	getPlayerName();
 
@@ -57,7 +62,7 @@ $(document).ready(function(){
 	function drawCircle(x, y, radius, color){
 		context.fillStyle=color;
 		context.beginPath();
-		context.arc(x, y, radius, 0, 2*Math.PI);
+		context.arc(x, y, radius/2, 0, 2*Math.PI);
 		context.fill();
 		context.closePath();
 	}
@@ -119,7 +124,7 @@ $(document).ready(function(){
 		for (i = 0; i < food.length ; i++){
 			//if (isInView(food[i], viewX, viewX+canvW, viewY, viewY+canvW)){
 				drawCircle(food[i].x, food[i].y, food[i].mass, food[i].color);
-			
+
 		}
 	}
 
@@ -148,6 +153,9 @@ $(document).ready(function(){
 		console.log(blobId);
 		foods = response.foods;
 		socket.on('death'+blobId,function(){
+			//Hide the score bar
+			$("#gameHelper").hide();
+			$("#score>span").text('');
 			//Display the death screen
 			$("#deathScreen").show();
 			console.log("Looks like we died..");
