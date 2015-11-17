@@ -18,6 +18,7 @@ $(document).ready(function(){
 	var alive;
 	var viewX=0;
 	var viewY=0;
+	var score;
 
 	function getPlayerName(){
 		$("#startScreen").show();
@@ -145,6 +146,12 @@ $(document).ready(function(){
 			drawPlayers(players);
 	    }
 	}
+
+	function updateScore(){
+		var thisBlob = getBlob(blobId);
+		score = thisBlob.score;
+		$("#score>span").text(score);
+	}
 	socket.on('init',function(data){
 		connected = true;
 		gameW = data.width;
@@ -161,6 +168,7 @@ $(document).ready(function(){
 			$("#score>span").text('');
 			//Display the death screen
 			$("#deathScreen").show();
+			$("#deathScore").text(score);
 			console.log("Looks like we died..");
 			alive = false;
 		});
@@ -175,6 +183,7 @@ $(document).ready(function(){
 			foods = response.foods;
 			drawFrame(blobs, foods);
 			getDirection();
+			updateScore();
 		}
 	});
 
