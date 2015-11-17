@@ -10,7 +10,6 @@ module.exports.getRouter = function(io){
 	var blobs = [];
 	var foods = [];
 	var foodAmount = (3000*3000)/1000;
-	fillFoods();
 	var foodSize = 5;
 	var blobCount = 0;
 	var allColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
@@ -128,6 +127,7 @@ module.exports.getRouter = function(io){
 		io.emit('update',{blobs: blobs, foods: foods});
 		setTimeout(sendData,20);
 	};
+	fillFoods();
 	sendData();
 
 	return router;
