@@ -1,6 +1,6 @@
 $(document).ready(function(){
-	// var socket = io();
-	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
+	var socket = io();
+	// var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var connected = false;
 	var canvas = document.getElementById("agarCanvas");
 	canvas.width = window.innerWidth;
@@ -191,7 +191,7 @@ $(document).ready(function(){
 			foods = response.foods;
 			drawFrame(blobs, foods);
 			getDirection();
-			if(blobId!=undefined){
+			if(alive){
 				updateScore();
 			}
 		}
