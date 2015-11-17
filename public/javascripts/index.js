@@ -94,6 +94,8 @@ $(document).ready(function(){
 		blobs = response[0];
 		blobId = response[1];
 		socket.on('death'+blobId,function(){
+			//Display the death screen
+			$("#deathScreen").show();
 			console.log("Looks like we died..");
 			alive = false;
 		});
