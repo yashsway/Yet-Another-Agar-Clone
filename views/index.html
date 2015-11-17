@@ -8,19 +8,21 @@
 		<title></title>
 	</head>
 	<body>
-
+		<div id="gameHelper">
+        <p id="controls">Use mouse to move around. Eat food or other smaller players and grow to survive!</p>
+        <p id="score">Score: 0</p>
+    </div>
 	<canvas id="agarCanvas"></canvas>
 	<div class="content" id="startScreen">
-		<h3 class="content topDownSpacing centerText">Welcome to Agar.io!</h2>
+		<h3 class="content topDownSpacing centerText" style="color:white">Welcome to Agar.io!</h2>
 		<h6 class="content topDownSpacing centerText" style="margin-top: 20px">Enter a name below and press start to play</h6>
-		<input class="content topDownSpacing" type="text" id="pName">
+		<input class="content topDownSpacing" type="text" maxlength="12"id="pName">
 		<button class="content button-primary topDownSpacing" id="start">Start</button>
 	</div>
 	<div class="content" id="deathScreen">
-		<h3 class="content topDownSpacing centerText">Game over!</h2>
-		<h6 class="content topDownSpacing centerText" style="margin-top: 20px"></h6>
-		<input class="content topDownSpacing" type="text" id="pName">
-		<button class="content button-primary topDownSpacing" id="start">Start</button>
+		<h3 class="content topDownSpacing centerText" style="color:white">Game over!</h2>
+		<h5 class="content topDownSpacing centerText" style="margin-top: 20px">Score:&nbsp&nbsp<span id="score">160</span></h5>
+		<button class="content button-primary topDownSpacing" id="start">Play Again!</button>
 	</div>
 	<!-- Scripts -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

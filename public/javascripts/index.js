@@ -115,6 +115,8 @@ $(document).ready(function(){
 		blobId = response.blobId;
 		foods = response.foods;
 		socket.on('death'+blobId,function(){
+			//Display the death screen
+			$("#deathScreen").show();
 			console.log("Looks like we died..");
 			alive = false;
 		});
