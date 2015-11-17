@@ -140,7 +140,9 @@ $(document).ready(function(){
 			drawPlayers(players);
 	    }
 	    else {
+	    	context.setTransform(1,0,0,1,0,0);
 	    	context.clearRect(0,0,canvW,canvH);
+	    	context.translate( viewX, viewY );
 	    	drawGrid();
 			drawPlayers(players);
 	    }
