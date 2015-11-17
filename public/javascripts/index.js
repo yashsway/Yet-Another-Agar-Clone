@@ -159,9 +159,9 @@ $(document).ready(function(){
 		connected = true;
 		gameW = data.width;
 		gameH = data.height;
+		//have start screen centered at where blob will be
 		viewX = -data.x+ canvW/2;
 		viewY = -data.y+ canvH/2;
-		console.log(data.x);
 	});
 	socket.on('ready',function(response){
 		blobs = response.blobs;
