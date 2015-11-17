@@ -6,10 +6,12 @@ module.exports.getRouter = function(io){
 	router.get('/', function(req, res, next) {
 		res.render('index.html');
 	});
-
+	var fieldW = 1500;
+	var fieldH = 1500;
 	var blobs = [];
 	var foods = [];
-	var foodAmount = (3000*3000)/10000;
+	var foodAmount = (3001*3001)/10000;
+	foodAmount = 100;
 	var foodMass = 100;
 	var blobCount = 0;
 	var allColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
@@ -17,6 +19,7 @@ module.exports.getRouter = function(io){
 
 	io.on('connection', function(socket){
 		console.log("Blob " + blobCount + " connected");
+		socket.emit('init',{width: fieldW, height: fieldH});
 		socket.on('playerReady',function(data){
 			var newId = blobCount++;
 			var loc = generateLoc();
@@ -42,11 +45,11 @@ module.exports.getRouter = function(io){
 					//var intercept = obj.y - (slope*obj.x);
 					var speed = (obj.speed/(obj.mass/1000));
 					if(dist>5){
-						if (0 <= blobs[i].x + dx/speed && 3000 >= blobs[i].x + dx/speed){
+						if (0 <= blobs[i].x + dx/speed && fieldW >= blobs[i].x + dx/speed){
 							blobs[i].x = blobs[i].x + (dx/dist)*speed;
 							//blobs[i].x = ((blobs[i].x+speed)-intercept)/slope;
 						}
-						if (0 <= blobs[i].y + dy/speed && 3000 >= blobs[i].y + dy/speed){
+						if (0 <= blobs[i].y + dy/speed && fieldH >= blobs[i].y + dy/speed){
 							blobs[i].y = blobs[i].y + (dy/dist)*speed;
 							//blobs[i].y = slope*(blobs[i].y+speed)+intercept;
 						}
@@ -68,7 +71,7 @@ module.exports.getRouter = function(io){
 	var generateLoc = function(){
 		var good = true;
 		do{
-			loc = {x: Math.floor((Math.random() * 3000) + 0), y: Math.floor((Math.random() * 3000) + 0)};
+			loc = {x: Math.floor((Math.random() * fieldW) + 0), y: Math.floor((Math.random() * fieldH) + 0)};
 			for (var i = 0; i < blobs.length; i++){
 				if (inside(loc,blobs[i])){
 					good = false;

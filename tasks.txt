@@ -3,14 +3,14 @@ TASKS! last updated nov 16
 AGAR.IO CODING TASKS :^)
 
 - fixed speed (proportional to weight) ~ yash
-✓ food generation ~ yash
+✓ food generation ~ jemar
 ✓ eating ~ jemar
 ✓ center-view for each player ~ vicky
 ✓ players can't move outside canvas ~ jemar
 ✓ join screen ~ yash/jemar
 ✓ names ~ vicky
-- display score ~ vicky
-- final score screen and redirect ~ yash
+- display score ~ yash
+✓ final score screen and redirect ~ yash/vicky
 
 EXTRAS
 - shooting/splitting
