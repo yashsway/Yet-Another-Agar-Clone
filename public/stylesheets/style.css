@@ -35,10 +35,41 @@ a {
 	background-color: salmon;
 	position: absolute;
 	z-index: 2;
-	display:none;
+	/*display:none;*/
 }
 #pName {
 	width: 100px;
 }
 #deathScreen {
+	left: 40%;
+	top: 40%;
+	width: 350px;
+	background-color: salmon;
+	position: absolute;
+	z-index: 2;
+	display: none;
+}
+#gameHelper {
+	 position: fixed;
+    z-index: 100;
+    height: 40px;
+    width: 100%;
+    overflow: hidden;
+    background-color: #2C3E50;
+    opacity: 0.8;
+    clear: both;
+}
+#gameHelper > #controls {
+    float: left;
+    vertical-align: middle;
+    font-size: 18px;
+    color: white;
+    margin: 5px 10px;
+}
+#gameHelper > #score {
+    float: right;
+    vertical-align: middle;
+    font-size: 18px;
+    color: #2ECC71;
+    margin: 5px 10px;
 }
