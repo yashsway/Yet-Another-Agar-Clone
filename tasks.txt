@@ -18,3 +18,17 @@ NEXT UP
 - leaderboard
 - smooshing
 - viewport clipping (optimization)
+
+Test Report - Task List
+-----------------------
+Title Page - Student names/numbers etc - Jemar
+Table of Contents - Jemar
+List of figures and tables
+Numbered pages - Jemar
+Major Revision History - Jemar
+Non-Functional Qualities Evaluation - usability, performance, robustness
+System Tests - initial state and expected output. Tests should be named.
+Explain use of automated testing if any
+Traceability to Requirements - (map tests to requirements basically)
+Traceability to Modules - (tests for all the different 'parts' of the game)
+Changes made in response to testing
