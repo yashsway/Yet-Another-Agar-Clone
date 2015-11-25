@@ -1,4 +1,4 @@
-TASKS! last updated nov 16
+TASKS! last updated nov 25
 
 AGAR.IO CODING TASKS :^)
 
@@ -27,6 +27,7 @@ Table of Contents - Jemar
 List of figures and tables
 Numbered pages - Jemar
 Major Revision History - Jemar
+Introduction - purpose, approach, outline of doc (should be pretty short)
 Non-Functional Qualities Evaluation
  	usability - Vicky
  	performance/robustness - Jemar
