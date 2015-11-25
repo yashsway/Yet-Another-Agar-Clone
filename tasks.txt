@@ -18,6 +18,7 @@ NEXT UP
 - leaderboard
 - smooshing
 - viewport clipping (optimization)
+- easter eggs!
 
 Test Report - Task List
 -----------------------
@@ -26,9 +27,14 @@ Table of Contents - Jemar
 List of figures and tables
 Numbered pages - Jemar
 Major Revision History - Jemar
-Non-Functional Qualities Evaluation - usability, performance, robustness
+Non-Functional Qualities Evaluation
+ 	usability - Vicky
+ 	performance/robustness - Jemar
 System Tests - initial state and expected output. Tests should be named.
-Explain use of automated testing if any
-Traceability to Requirements - (map tests to requirements basically)
-Traceability to Modules - (tests for all the different 'parts' of the game)
-Changes made in response to testing
+	1-10 - Yash
+	11-21 - Jemar
+	22-31 - Vicky
+Explain use of automated testing if any - Yash
+Traceability to Requirements - (map tests to requirements basically) - Vicky
+Traceability to Modules - (tests for all the different 'parts' of the game) - Jemar
+Changes made in response to testing - Yash
