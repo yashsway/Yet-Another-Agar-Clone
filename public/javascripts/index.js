@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	//var socket = io();
+	// var socket = io();
 	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var connected = false;
 	var canvas = document.getElementById("agarCanvas");
@@ -25,11 +25,9 @@ $(document).ready(function(){
 		$("#start").on('click',function(){
 			var player = {name:$("#pName").val()};
 			console.log(player.name);
-			if(player.name!=''){
-				socket.emit('playerReady',player);
-				$("#startScreen").hide();
-				$("#gameHelper").show();
-			}
+			socket.emit('playerReady',player);
+			$("#startScreen").hide();
+			$("#gameHelper").show();
 		});
 		$(document).keypress(function(e){
 	    if (e.which == 13){
