@@ -1,6 +1,6 @@
 $(document).ready(function(){
-	// var socket = io();
-	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
+	var socket = io();
+	//var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
 	var connected = false;
 	var canvas = document.getElementById("agarCanvas");
 	canvas.width = window.innerWidth;
@@ -20,6 +20,7 @@ $(document).ready(function(){
 	var viewY=0;
 	var score=0;
 
+	//saves player's input name
 	function getPlayerName(){
 		$("#startScreen").show();
 		$("#start").on('click',function(){
@@ -37,6 +38,7 @@ $(document).ready(function(){
 	}
 	getPlayerName();
 
+	//draws the background grid for the game
 	function drawGrid(){
 		context.strokeStyle="#d3d3d3";
 		//vertical
@@ -59,6 +61,7 @@ $(document).ready(function(){
 		}
 	}
 
+	//circle drawing function
 	function drawCircle(x, y, radius, color){
 		context.fillStyle=color;
 		context.beginPath();
@@ -67,6 +70,7 @@ $(document).ready(function(){
 		context.closePath();
 	}
 
+	//draws name at x,y
 	function drawName(x, y, name){
 		context.font = "bold 30px Arial";
 		context.fillStyle = "white";
@@ -77,6 +81,7 @@ $(document).ready(function(){
 		context.strokeText(name,x,y+10);
 	}
 
+	//finds user's mouse positionon "mouseMove" event
 	function mousePos(e){
 		var rect = canvas.getBoundingClientRect();
 		mouse.x = e.clientX - rect.left;
@@ -87,23 +92,13 @@ $(document).ready(function(){
 		return document.hidden || document.msHidden || document.webkitHidden || document.mozHidden;
 	}
 
-	function isInView(obj, xMin, xMax, yMin, yMax){
-		var r = obj.radius;
-		if (obj.x+r < xMax){
-			if (obj.x+r > xMin){
-				if (obj.y < yMax){
-					if (obj.y > yMin){
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
+	//finds the distance between the player's blob and the mouse
+	//sends that distance's dx and dy components in "dir" to the backend
+	//so that it can compute the next position of the blob
 	function getDirection(e){
 		if (!isPageHidden() && alive){
-			dir.dx = mouse.x - canvW/2;
+			//distance between mouse and center of canvas(since that's where blob is drawn)
+			dir.dx = mouse.x - canvW/2; 
 			dir.dy = mouse.y - canvH/2;
 			var thisBlob = getBlob(blobId);
 			var newObj = {id: thisBlob.id, x: thisBlob.x, y: thisBlob.y, mass: thisBlob.mass, radius: thisBlob.radius, color: thisBlob.color, dir: dir};
@@ -111,33 +106,40 @@ $(document).ready(function(){
 		}
 	}
 
+	//draw all the players in the given array
 	function drawPlayers(players){
 		for (i = 0; i < players.length ; i++){
-			//if (isInView(players[i], viewX, viewX+canvW, viewY, viewY+canvW)){
 			drawCircle(players[i].x, players[i].y, players[i].radius, players[i].color);
-			drawName(players[i].x, players[i].y, players[i].name);//}
+			drawName(players[i].x, players[i].y, players[i].name);
 		}
 	}
 
+	//draw all foods in the given array
 	function drawFoods(food){
 		for (i = 0; i < food.length ; i++){
-			//if (isInView(food[i], viewX, viewX+canvW, viewY, viewY+canvW)){
 				drawCircle(food[i].x, food[i].y, food[i].radius, food[i].color);
 		}
 	}
 
+	//draws the next frame using the various draw methods defined above
 	function drawFrame(players, food){
+		//if alive, move viewport with the blob
 		if (alive){
 			var thisBlob = getBlob(blobId);
-			context.setTransform(1,0,0,1,0,0);
-			context.clearRect(0,0,canvW,canvH);
-			viewX = -thisBlob.x + canvW/2
+			context.setTransform(1,0,0,1,0,0); //reset transformations
+			context.clearRect(0,0,canvW,canvH); //clear screen
+			//find viewport co-ordinates
+			viewX = -thisBlob.x + canvW/2 
 	    	viewY = -thisBlob.y + canvH/2
+	    	//translate to new coordinates
 	    	context.translate( viewX, viewY );
+	    	//draw everything!
 	    	drawGrid();
 	    	drawFoods(foods);
 			drawPlayers(players);
 	    }
+	    //if dead, keep viewport where blob died
+	    //but continue animating so they can watch the game! :)
 	    else {
 	    	context.setTransform(1,0,0,1,0,0);
 	    	context.clearRect(0,0,canvW,canvH);
@@ -153,19 +155,31 @@ $(document).ready(function(){
 		score = thisBlob.score;
 		$("#score>span").text(score);
 	}
+
+	//connects to server
+	//->recieve gameW and gameH
+	//->determine initial viewport
 	socket.on('init',function(data){
 		connected = true;
+		foods = data.foods;
 		gameW = data.width;
 		gameH = data.height;
 		//have start screen centered at where blob will be
 		viewX = -data.x+ canvW/2;
 		viewY = -data.y+ canvH/2;
 	});
+
+	//begins game
+	//->recieve blobs
+	//->recieve your blob
+	//->recieve foods
+	//->begins drawing
+	//->adds mouse event listener
 	socket.on('ready',function(response){
 		blobs = response.blobs;
 		blobId = response.blobId;
 		console.log(blobId);
-		foods = response.foods;
+		//foods = response.foods;
 		socket.on('death'+blobId,function(){
 			//Hide the score bar
 			$("#gameHelper").hide();
@@ -180,6 +194,8 @@ $(document).ready(function(){
 		drawFrame(blobs);
 		window.addEventListener('mousemove', mousePos);
 	});
+
+	//find blob in blobs array
 	function getBlob(id){
 		for (var i = 0; i < blobs.length; i++){
 			if (blobs[i].id == id){
@@ -187,10 +203,26 @@ $(document).ready(function(){
 			}
 		}
 	}
+
+	function updateFoods(foodArr, newFoodObjs, eatenFoodIds){
+		for (var i=0; i<foodArr.length; i++){
+			for (var j=0; j<eatenFoodIds; j++){
+				if (foodArr[i].id==eatenFoodIds[j]) foodArr.splice(i,1);
+			}
+		}
+		for (var i=0; i<newFoodObjs; i++){
+			foodArr[foodArr.length+1]=newFoodObjs[i];
+		}
+	}
+
+	//game loop, starts after connection to server
+	//->recieves blobs and foods from backend
+	//->draws frame
+	//->sends direction to backend
 	socket.on('update',function(response){
 		if (connected){
 			blobs = response.blobs;
-			foods = response.foods;
+			updateFoods(foods, response.newFoods, response.eatenFoods);
 			drawFrame(blobs, foods);
 			getDirection();
 			if(alive){
