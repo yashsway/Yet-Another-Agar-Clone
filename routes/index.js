@@ -13,6 +13,7 @@ module.exports.getRouter = function(io){
 	var foods = [];
 	var foodAmount = (3001*3001)/10000;
 	foodAmount = 100;
+	var foodIdCount = 0;
 	var foodMass = 100;
 	var blobCount = 0;
 	var allColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
@@ -22,11 +23,11 @@ module.exports.getRouter = function(io){
 	io.on('connection', function(socket){
 		console.log("Blob " + blobCount + " connected");
 		var loc = generateLoc();
-		socket.emit('init',{width: fieldW, height: fieldH, x: loc.x, y: loc.y});
+		socket.emit('init',{width: fieldW, height: fieldH, x: loc.x, y: loc.y, foods: foods});
 		socket.on('playerReady',function(data){
 			var newId = blobCount++;
 			blobs[blobs.length] = {x: loc.x, y: loc.y, mass: 1256,radius: convertToRadius(1256), color: allColors[newId % allColors.length], id: newId, name: data.name, score: 0};
-			var response = {blobs: blobs, blobId: newId, foods: foods};
+			var response = {blobs: blobs, blobId: newId};
 			socket.emit('ready',response);
 			socket.on('disconnect',function(){
 				for (var i = 0; i < blobs.length;i++){
@@ -64,11 +65,11 @@ module.exports.getRouter = function(io){
 	var convertToRadius = function(mass){
 		return Math.floor(Math.sqrt(mass/Math.PI));
 	};
-	var generateFood = function(mass){
+	var generateFood = function(foodId){
 		var loc = generateLoc();
-		return {x: loc.x, y: loc.y, mass: foodMass, radius: convertToRadius(foodMass), color: allColors[Math.floor(Math.random() * (allColors.length))]};
+		return {id: foodId, x: loc.x, y: loc.y, mass: foodMass, radius: convertToRadius(foodMass), color: allColors[Math.floor(Math.random() * (allColors.length))]};
 	};
-	var generateLoc = function(){
+	var generateLoc = function(id){
 		var good = true;
 		do{
 			loc = {x: Math.floor((Math.random() * fieldW) + 0), y: Math.floor((Math.random() * fieldH) + 0)};
@@ -80,7 +81,7 @@ module.exports.getRouter = function(io){
 		}while(!good);
 		return loc;
 	};
-	// O(n^2) should probably improve
+
 	var checkEating = function(){
 		if (blobs.length > 0){
 			quad.clear();
@@ -132,18 +133,22 @@ module.exports.getRouter = function(io){
 					blobs.splice(l,1);
 				}
 			}
+			var eatenFoods = [];
 			for (var m = foods.length - 1; m >= 0; m--) {
 				if (foods[m].eaten){
+					eatenFoods[eatenFoods.length] = foods[m].id;
 					foods.splice(m,1);
 				}
 			}
+			return eatenFoods;
 		}
 	};
 	var fillFoods = function(){
+		var newFoods = [];
 		for (var i = foods.length; i < foodAmount; i++) {
-			foods[i] = generateFood();
+			foods[i] = generateFood(foodIdCount++);
+			newFoods[newFoods.length] = foods[i];
 		}
-		foods[0].here = true;
 	};
 	//checks if a is inside b
 	var inside = function(a,b){
@@ -155,12 +160,12 @@ module.exports.getRouter = function(io){
 	};
 	//This is our 'game loop' implemented as a callback loop.
 	var sendData = function(){
-		checkEating();
-		fillFoods();
-		io.emit('update',{blobs: blobs, foods: foods});
+		var eatenFoods = checkEating();
+		var newFoods = fillFoods();
+		io.emit('update',{blobs: blobs,newFoods: newFoods,eatenFoods: eatenFoods});
 		setTimeout(sendData,20);
 	};
-	fillFoods();
+	// fillFoods();
 	sendData();
 
 	return router;
