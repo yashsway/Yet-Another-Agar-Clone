@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var quadtree = require('../local/Quadtree.js');
 
 module.exports.getRouter = function(io){
 
@@ -11,11 +12,12 @@ module.exports.getRouter = function(io){
 	var blobs = [];
 	var foods = [];
 	var foodAmount = (3001*3001)/10000;
-	foodAmount = 100;
+	foodAmount = 25;
 	var foodMass = 100;
 	var blobCount = 0;
 	var allColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
 	var percent = 0.1;
+	var quad = new quadtree.Quadtree(0,{x:0,y:0,width:fieldW,height:fieldH});
 
 	io.on('connection', function(socket){
 		console.log("Blob " + blobCount + " connected");
@@ -60,7 +62,7 @@ module.exports.getRouter = function(io){
 	var convertToRadius = function(mass){
 		return Math.floor(Math.sqrt(mass/Math.PI));
 	};
-	var generateFood = function(){
+	var generateFood = function(mass){
 		var loc = generateLoc();
 		return {x: loc.x, y: loc.y, mass: foodMass, radius: convertToRadius(foodMass), color: allColors[Math.floor(Math.random() * (allColors.length))]};
 	};
@@ -78,37 +80,60 @@ module.exports.getRouter = function(io){
 	};
 	// O(n^2) should probably improve
 	var checkEating = function(){
-		for (var i = 0; i < blobs.length; i++) {
-			for (var j = 0; j < blobs.length; j++) {
-				// Checking for the eating of blobs that haven't already been eaten.
-				if (i != j && !blobs[i].eaten && !blobs[j].eaten && inside(blobs[j],blobs[i])){
-					console.log("Doing eating of " + blobs[j].id  + " by " + blobs[i].id);
-					blobs[i].score += blobs[j].radius;
-					blobs[i].mass += blobs[j].mass;
-					blobs[i].radius = convertToRadius(blobs[i].mass);
-					blobs[j].eaten = true; //Mark blob for deletion
-				}
+		if (blobs.length > 0){
+			quad.clear();
+			for (var i = 0; i < blobs.length; i++) {
+				quad.insert(blobs[i]);
 			}
 			for (var k = 0; k < foods.length; k++) {
-				if (!foods.eaten && inside(foods[k],blobs[i])){
-					blobs[i].score += foods[k].radius;
-					blobs[i].mass += foods[k].mass;
-					blobs[i].radius = convertToRadius(blobs[i].mass);
-					foods[k].eaten = true;
+				quad.insert(foods[k]);
+			}
+
+			for (var i = 0; i < blobs.length; i++) {
+				var objsToCheck = [];
+				objsToCheck = quad.retrieve(objsToCheck,blobs[i]);
+				for (var j = 0; j < objsToCheck.length; j++) {
+					if (blobs[i].id != objsToCheck[j].id && !blobs[i].eaten && !objsToCheck[j].eaten && inside(objsToCheck[j],blobs[i])){
+						blobs[i].score += objsToCheck[j].radius;
+						blobs[i].mass += objsToCheck[j].mass;
+						blobs[i].radius = convertToRadius(blobs[i].mass);
+						objsToCheck[j].eaten = true; //Mark blob for deletion
+					}
+				};
+			}
+
+			// for (var i = 0; i < blobs.length; i++) {
+			// 	for (var j = 0; j < blobs.length; j++) {
+			// 		// Checking for the eating of blobs that haven't already been eaten.
+			// 		if (i != j && !blobs[i].eaten && !blobs[j].eaten && inside(blobs[j],blobs[i])){
+			// 			console.log("Doing eating of " + blobs[j].id  + " by " + blobs[i].id);
+			// 			blobs[i].score += blobs[j].radius;
+			// 			blobs[i].mass += blobs[j].mass;
+			// 			blobs[i].radius = convertToRadius(blobs[i].mass);
+			// 			blobs[j].eaten = true; //Mark blob for deletion
+			// 		}
+			// 	}
+			// 	for (var k = 0; k < foods.length; k++) {
+			// 		if (!foods.eaten && inside(foods[k],blobs[i])){
+			// 			blobs[i].score += foods[k].radius;
+			// 			blobs[i].mass += foods[k].mass;
+			// 			blobs[i].radius = convertToRadius(blobs[i].mass);
+			// 			foods[k].eaten = true;
+			// 		}
+			// 	}
+			// }
+			//Remove eaten blobs (we loop in reverse to avoid the trouble of index changes)
+			for (var l = blobs.length - 1; l >= 0; l--) {
+				if (blobs[l].eaten){
+					// console.log("Killing blob: " + blobs[l].id);
+					io.emit('death'+blobs[l].id,blobs[l]);
+					blobs.splice(l,1);
 				}
 			}
-		}
-		//Remove eaten blobs (we loop in reverse to avoid the trouble of index changes)
-		for (var l = blobs.length - 1; l >= 0; l--) {
-			if (blobs[l].eaten){
-				// console.log("Killing blob: " + blobs[l].id);
-				io.emit('death'+blobs[l].id,blobs[l]);
-				blobs.splice(l,1);
-			}
-		}
-		for (var m = foods.length - 1; m >= 0; m--) {
-			if (foods[m].eaten){
-				foods.splice(m,1);
+			for (var m = foods.length - 1; m >= 0; m--) {
+				if (foods[m].eaten){
+					foods.splice(m,1);
+				}
 			}
 		}
 	};
@@ -116,6 +141,7 @@ module.exports.getRouter = function(io){
 		for (var i = foods.length; i < foodAmount; i++) {
 			foods[i] = generateFood();
 		}
+		foods[0].here = true;
 	};
 	//checks if a is inside b
 	var inside = function(a,b){
