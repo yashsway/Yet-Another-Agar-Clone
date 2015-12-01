@@ -43,7 +43,9 @@ module.exports.getRouter = function(io){
 					var dx = obj.dir.dx;
 					var dy = obj.dir.dy;
 					var dist = Math.sqrt(dx*dx+dy*dy);
-					var speed = 10-(((obj.mass*24)/obj.radius)/1000);
+					var speed = Math.round(((obj.radius*7/obj.mass)*100)*100)/100;
+					//var speed = ((((obj.radius*7/obj.mass)*100).toFixed(2))+((obj.radius/obj.mass)*0.01));
+					console.log(speed);
 					if(dist>5){
 						if (0 <= blobs[i].x + dx/speed && fieldW >= blobs[i].x + dx/speed){
 							blobs[i].x = blobs[i].x + (dx/dist)*speed;
