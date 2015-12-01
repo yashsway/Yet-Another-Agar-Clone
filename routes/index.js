@@ -12,7 +12,7 @@ module.exports.getRouter = function(io){
 	var blobs = [];
 	var foods = [];
 	var foodAmount = (3001*3001)/10000;
-	foodAmount = 1;
+	foodAmount = 25;
 	var foodMass = 100;
 	var blobCount = 0;
 	var allColors = ["red","green","blue","orange","yellow","purple","cyan","magenta"];
@@ -62,7 +62,7 @@ module.exports.getRouter = function(io){
 	var convertToRadius = function(mass){
 		return Math.floor(Math.sqrt(mass/Math.PI));
 	};
-	var generateFood = function(){
+	var generateFood = function(mass){
 		var loc = generateLoc();
 		return {x: loc.x, y: loc.y, mass: foodMass, radius: convertToRadius(foodMass), color: allColors[Math.floor(Math.random() * (allColors.length))]};
 	};
@@ -92,7 +92,6 @@ module.exports.getRouter = function(io){
 			for (var i = 0; i < blobs.length; i++) {
 				var objsToCheck = [];
 				objsToCheck = quad.retrieve(objsToCheck,blobs[i]);
-				console.log(objsToCheck);
 				for (var j = 0; j < objsToCheck.length; j++) {
 					if (blobs[i].id != objsToCheck[j].id && !blobs[i].eaten && !objsToCheck[j].eaten && inside(objsToCheck[j],blobs[i])){
 						blobs[i].score += objsToCheck[j].radius;
@@ -142,6 +141,7 @@ module.exports.getRouter = function(io){
 		for (var i = foods.length; i < foodAmount; i++) {
 			foods[i] = generateFood();
 		}
+		foods[0].here = true;
 	};
 	//checks if a is inside b
 	var inside = function(a,b){

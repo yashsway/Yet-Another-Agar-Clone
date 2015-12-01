@@ -39,8 +39,8 @@ var Quadtree = function(plevel, pBounds){
 		var vMidPoint = this.bounds.x + (this.bounds.width/2);
 		var hMidPoint = this.bounds.y + (this.bounds.height/2);
 
-		var topQuad = (obj.y + obj.radius > hMidPoint);
-		var bottomQuad = (obj.y - obj.radius < hMidPoint);
+		var topQuad = (obj.y - obj.radius > hMidPoint);
+		var bottomQuad = (obj.y + obj.radius < hMidPoint);
 
 		if (obj.x + obj.radius < vMidPoint){
 			if (topQuad){
@@ -91,9 +91,8 @@ var Quadtree = function(plevel, pBounds){
 
 	this.retrieve = function(returnObjs, obj){
 		var index = this.getIndex(obj);
-		console.log(index);
 		if (index != -1 && this.nodes[0] !== undefined){
-			this.nodes[index].retrieve(returnObjs, obj);
+			returnObjs = returnObjs.concat(this.nodes[index].retrieve(returnObjs, obj));
 		}
 		returnObjs = returnObjs.concat(this.objects);
 		return returnObjs;
