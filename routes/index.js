@@ -7,12 +7,12 @@ module.exports.getRouter = function(io){
 	router.get('/', function(req, res, next) {
 		res.render('index.html');
 	});
-	var fieldW = 1500;
-	var fieldH = 1500;
+	var fieldW = 2500;
+	var fieldH = 2500;
 	var blobs = [];
 	var foods = [];
-	var foodAmount = (3001*3001)/10000;
-	foodAmount = 100;
+	//var foodAmount = (3001*3001)/10000;
+	var foodAmount = 200;
 	var foodIdCount = 0;
 	var foodMass = 100;
 	var blobCount = 0;
@@ -26,7 +26,7 @@ module.exports.getRouter = function(io){
 		socket.emit('init',{width: fieldW, height: fieldH, x: loc.x, y: loc.y, foods: foods});
 		socket.on('playerReady',function(data){
 			var newId = blobCount++;
-			blobs[blobs.length] = {x: loc.x, y: loc.y, mass: 1256,radius: convertToRadius(1256), color: allColors[newId % allColors.length], id: newId, name: data.name, score: 0};
+			blobs[blobs.length] = {x: loc.x, y: loc.y, mass: 1256,radius: convertToRadius(1256), color: allColors[newId % allColors.length], id: newId, name: data.name, score: 0, powerup: 0};
 			//special color
 			if (data.name.indexOf("smith") > -1 || data.name.indexOf("Smith") > -1 || data.name.indexOf("spence") > -1 || data.name.indexOf("Spence") > -1) blobs[blobs.length-1].color = "smith";
 			var response = {blobs: blobs, blobId: newId};
@@ -47,6 +47,7 @@ module.exports.getRouter = function(io){
 					var dy = obj.dir.dy;
 					var dist = Math.sqrt(dx*dx+dy*dy);
 					var speed = 10-(((obj.mass*24)/obj.radius)/1000);
+					if (blobs[i].powerup) speed+=2;
 
 					if(dist>5){
 						if (0 <= blobs[i].x + dx/speed && fieldW >= blobs[i].x + dx/speed){
@@ -70,7 +71,12 @@ module.exports.getRouter = function(io){
 	};
 	var generateFood = function(foodId){
 		var loc = generateLoc();
-		return {id: foodId, x: loc.x, y: loc.y, mass: foodMass, radius: convertToRadius(foodMass), color: allColors[Math.floor(Math.random() * (allColors.length))]};
+		var powerup = false;
+		if (Math.floor(Math.random()*(foodAmount/3))==0){
+			powerup = true;
+			console.log("powerup!!");
+		}
+		return {id: foodId, x: loc.x, y: loc.y, mass: foodMass, radius: convertToRadius(foodMass), color: allColors[Math.floor(Math.random() * (allColors.length))], powerup: powerup};
 	};
 	var generateLoc = function(id){
 		var good = true;
@@ -121,9 +127,14 @@ module.exports.getRouter = function(io){
 				}
 				for (var k = 0; k < foods.length; k++) {
 					if (!foods.eaten && inside(foods[k],blobs[i])){
-						blobs[i].score += foods[k].radius;
-						blobs[i].mass += foods[k].mass;
-						blobs[i].radius = convertToRadius(blobs[i].mass);
+						if (foods[k].powerup){
+							blobs[i].powerup+=4000;
+						}
+						else {
+							blobs[i].score += foods[k].radius;
+							blobs[i].mass += foods[k].mass;
+							blobs[i].radius = convertToRadius(blobs[i].mass);
+						}
 						foods[k].eaten = true;
 					}
 				}
@@ -162,13 +173,24 @@ module.exports.getRouter = function(io){
 		}
 		return false;
 	};
+
+	var updatePowerups = function(){
+		for (var i = 0; i < blobs.length; i++) {
+			if (blobs[i].powerup){
+				blobs[i].powerup -= 20;
+			}
+		};
+	}
+
 	//This is our 'game loop' implemented as a callback loop.
 	var sendData = function(){
 		var eatenFoods = checkEating();
 		var newFoods = fillFoods();
 		io.emit('update',{blobs: blobs,newFoods: newFoods,eatenFoods: eatenFoods});
 		//io.emit('update',{blobs: blobs,foods:foods});
+		updatePowerups();
 		setTimeout(sendData,20);
+
 	};
 	// fillFoods();
 	sendData();
