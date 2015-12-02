@@ -26,6 +26,12 @@ a {
 .centerText {
 	text-align: center;
 }
+#smth{
+	position:fixed;
+	z-index:-100;
+	opacity:0;
+	border-radius:100%;
+}
 /* Canvas */
 #agarCanvas {
 	position: fixed;

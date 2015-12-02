@@ -6,6 +6,7 @@ $(document).ready(function(){
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	var context = canvas.getContext("2d");
+	var img=document.getElementById("smth");
 	var gameW; //width
 	var gameH; //height
 	var canvW = canvas.width;
@@ -22,12 +23,14 @@ $(document).ready(function(){
 
 	//saves player's input name
 	function getPlayerName(){
+		$('button').prop('disabled', false);
 		$("#startScreen").show();
 		$("#start").on('click',function(){
 			var player = {name:$("#pName").val()};
 			console.log(player.name);
 			socket.emit('playerReady',player);
 			$("#startScreen").hide();
+			$('button').prop('disabled', true);
 			$("#gameHelper").show();
 		});
 		$(document).keypress(function(e){
@@ -63,11 +66,28 @@ $(document).ready(function(){
 
 	//circle drawing function
 	function drawCircle(x, y, radius, color){
-		context.fillStyle=color;
-		context.beginPath();
-		context.arc(x, y, radius, 0, 2*Math.PI);
-		context.fill();
-		context.closePath();
+		if (color==="smith"){
+			context.save();
+		    context.beginPath();
+		    context.arc(x, y, radius, 0, 2*Math.PI);
+		    context.closePath();
+		    context.clip();
+
+		    context.drawImage(img, x-radius, y-radius, radius*2, radius*2);
+
+		    context.beginPath();
+		    context.arc(x, y, radius, 0, 2*Math.PI);
+		    context.clip();
+		    context.closePath();
+		    context.restore();
+		}
+		else{
+			context.fillStyle=color;
+			context.beginPath();
+			context.arc(x, y, radius, 0, 2*Math.PI);
+			context.fill();
+			context.closePath();
+		}
 	}
 
 	//draws name at x,y
