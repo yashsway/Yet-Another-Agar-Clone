@@ -205,14 +205,17 @@ $(document).ready(function(){
 	}
 
 	function updateFoods(foodArr, newFoodObjs, eatenFoodIds){
-		for (var i=0; i<foodArr.length; i++){
-			for (var j=0; j<eatenFoodIds; j++){
-				if (foodArr[i].id==eatenFoodIds[j]) foodArr.splice(i,1);
+		if (eatenFoodIds){
+			for (var i=foodArr.length-1; i>=0; i--){
+				for (var j=0; j<eatenFoodIds.length; j++){
+					if (foodArr[i].id==eatenFoodIds[j]) foodArr.splice(i,1);
+				}
 			}
 		}
-		for (var i=0; i<newFoodObjs; i++){
-			foodArr[foodArr.length+1]=newFoodObjs[i];
+		for (var k=0; k<newFoodObjs.length; k++){
+			foodArr[foodArr.length]=newFoodObjs[k];
 		}
+		return foodArr;
 	}
 
 	//game loop, starts after connection to server
@@ -222,7 +225,8 @@ $(document).ready(function(){
 	socket.on('update',function(response){
 		if (connected){
 			blobs = response.blobs;
-			updateFoods(foods, response.newFoods, response.eatenFoods);
+			//foods = response.foods;
+			foods = updateFoods(foods, response.newFoods, response.eatenFoods);
 			drawFrame(blobs, foods);
 			getDirection();
 			if(alive){
