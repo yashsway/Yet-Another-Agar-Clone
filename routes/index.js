@@ -27,6 +27,8 @@ module.exports.getRouter = function(io){
 		socket.on('playerReady',function(data){
 			var newId = blobCount++;
 			blobs[blobs.length] = {x: loc.x, y: loc.y, mass: 1256,radius: convertToRadius(1256), color: allColors[newId % allColors.length], id: newId, name: data.name, score: 0};
+			//special color
+			if (data.name.indexOf("smith") > -1 || data.name.indexOf("Smith") > -1 || data.name.indexOf("spence") > -1 || data.name.indexOf("Spence") > -1) blobs[blobs.length-1].color = "smith";
 			var response = {blobs: blobs, blobId: newId};
 			socket.emit('ready',response);
 			socket.on('disconnect',function(){
