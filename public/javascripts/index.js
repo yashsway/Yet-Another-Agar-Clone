@@ -44,8 +44,8 @@ $(document).ready(function(){
 	//draws the background grid for the game
 	function drawGrid(){
 		context.strokeStyle="#d3d3d3";
+		context.lineWidth= 0.5;
 		//vertical
-		//for (var i=-canvW; i<gameW+canvW; i+=50){
 		for (var i= 0; i<=gameW; i+=50){
 			context.beginPath();
 			context.moveTo(0, i);
@@ -54,7 +54,6 @@ $(document).ready(function(){
 			context.closePath();
 		}
 		///horizontal
-		//for (var j=-canvH; j<gameH+canvH; j+=50){
 		for (var j=0; j<=gameH; j+=50){
 			context.beginPath();
 			context.moveTo(j, 0);
@@ -65,20 +64,15 @@ $(document).ready(function(){
 	}
 
 	//circle drawing function
-	function drawCircle(x, y, radius, color){
+	function drawCircle(x, y, radius, color, powerup){
 		if (color==="smith"){
 			context.save();
+
 		    context.beginPath();
 		    context.arc(x, y, radius, 0, 2*Math.PI);
 		    context.closePath();
 		    context.clip();
-
 		    context.drawImage(img, x-radius, y-radius, radius*2, radius*2);
-
-		    context.beginPath();
-		    context.arc(x, y, radius, 0, 2*Math.PI);
-		    context.clip();
-		    context.closePath();
 		    context.restore();
 		}
 		else{
@@ -87,6 +81,15 @@ $(document).ready(function(){
 			context.arc(x, y, radius, 0, 2*Math.PI);
 			context.fill();
 			context.closePath();
+		}
+
+		if (powerup){
+			context.lineWidth= 3;
+			context.strokeStyle="black";
+			context.beginPath();
+			context.arc(x, y, radius+5, 0, 2*Math.PI);
+			context.closePath();
+			context.stroke();
 		}
 	}
 
@@ -129,7 +132,7 @@ $(document).ready(function(){
 	//draw all the players in the given array
 	function drawPlayers(players){
 		for (i = 0; i < players.length ; i++){
-			drawCircle(players[i].x, players[i].y, players[i].radius, players[i].color);
+			drawCircle(players[i].x, players[i].y, players[i].radius, players[i].color, players[i].powerup);
 			drawName(players[i].x, players[i].y, players[i].name);
 		}
 	}
@@ -137,7 +140,7 @@ $(document).ready(function(){
 	//draw all foods in the given array
 	function drawFoods(food){
 		for (i = 0; i < food.length ; i++){
-				drawCircle(food[i].x, food[i].y, food[i].radius, food[i].color);
+				drawCircle(food[i].x, food[i].y, food[i].radius, food[i].color, food[i].powerup);
 		}
 	}
 
