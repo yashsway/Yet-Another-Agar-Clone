@@ -25,12 +25,13 @@ $(document).ready(function(){
 	function getPlayerName(){
 		$('button').prop('disabled', false);
 		$("#startScreen").show();
+		$('#start').prop('disabled', false);
 		$("#start").on('click',function(){
 			var player = {name:$("#pName").val()};
 			console.log(player.name);
 			socket.emit('playerReady',player);
 			$("#startScreen").hide();
-			$('button').prop('disabled', true);
+			$('#start').prop('disabled', true);
 			$("#gameHelper").show();
 		});
 		$(document).keypress(function(e){
@@ -118,7 +119,7 @@ $(document).ready(function(){
 	function getDirection(e){
 		if (!isPageHidden() && alive){
 			//distance between mouse and center of canvas(since that's where blob is drawn)
-			dir.dx = mouse.x - canvW/2; 
+			dir.dx = mouse.x - canvW/2;
 			dir.dy = mouse.y - canvH/2;
 			var thisBlob = getBlob(blobId);
 			var newObj = {id: thisBlob.id, x: thisBlob.x, y: thisBlob.y, mass: thisBlob.mass, radius: thisBlob.radius, color: thisBlob.color, dir: dir};
@@ -149,7 +150,7 @@ $(document).ready(function(){
 			context.setTransform(1,0,0,1,0,0); //reset transformations
 			context.clearRect(0,0,canvW,canvH); //clear screen
 			//find viewport co-ordinates
-			viewX = -thisBlob.x + canvW/2 
+			viewX = -thisBlob.x + canvW/2
 	    	viewY = -thisBlob.y + canvH/2
 	    	//translate to new coordinates
 	    	context.translate( viewX, viewY );
