@@ -46,7 +46,12 @@ module.exports.getRouter = function(io){
 					var dx = obj.dir.dx;
 					var dy = obj.dir.dy;
 					var dist = Math.sqrt(dx*dx+dy*dy);
-					var speed = 10-(((obj.mass*24)/obj.radius)/1000);
+					var takeMod = 1;
+					var ceilMod = 0;
+					var speed = (10+ceilMod)-((((obj.mass*takeMod)*24)/(obj.radius*takeMod))/1000);
+					takeMod -= 0.001;
+					ceilMod += 0.01;
+					console.log(speed);
 					if (blobs[i].powerup) speed+=2;
 
 					if(dist>5){
