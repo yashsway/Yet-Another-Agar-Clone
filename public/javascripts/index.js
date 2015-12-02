@@ -25,7 +25,7 @@ $(document).ready(function(){
 	function getPlayerName(){
 		$('button').prop('disabled', false);
 		$("#startScreen").show();
-		$('#start').prop('disabled', true);
+		$('#start').prop('disabled', false);
 		$("#start").on('click',function(){
 			var player = {name:$("#pName").val()};
 			console.log(player.name);
