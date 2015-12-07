@@ -39,3 +39,14 @@ Explain use of automated testing if any - Yash
 Traceability to Requirements - (map tests to requirements basically) - Vicky
 Traceability to Modules - (tests for all the different 'parts' of the game) - Jemar
 Changes made in response to testing - Yash
+
+
+Final Doc Tasks
+----------------
+Rewrite some content from previous docs
+Final version changes
+	List all changes... use ideas from presentation
+Add a section in the doc for Installation/Running the game (list required libraies)
+Add a link to the website where the game is hosted
+
+
