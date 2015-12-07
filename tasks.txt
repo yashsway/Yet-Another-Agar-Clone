@@ -44,6 +44,17 @@ Changes made in response to testing - Yash
 Final Doc Tasks
 ----------------
 Rewrite some content from previous docs
+In specific:
+	Problem Statement
+		Improve stakeholders description
+	Requirements Doc
+		Introduction section and subsections. Browse for improvements
+	Design Doc
+		Add a section on how to implement a given random module from its specific
+		Add a section on how to implement a random model from spec
+	Test Plan
+		Add tests that generate exceptions
+		Add a section that details how the existing implementation will be used in testing. Small preferably.
 Final version changes
 	List all changes... use ideas from presentation
 Add a section in the doc for Installation/Running the game (list required libraies)
