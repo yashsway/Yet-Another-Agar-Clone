@@ -1,6 +1,18 @@
+/*This file mainly pertains to the front-end of the project: drawing the game
+and ensuring the correct windows are being displayed.
+
+In terms of modules, it includes the behaviour-hiding modules:
+- Game input (grabs mouse co-ordinates)
+- Game drawing (all the draw__() functions)
+- Window drawing (displays and hides certain windows when appropriate)
+- Window input (grabs textbox and button input)
+The HTML and CSS files also relate to the Window modules, but the most important content is in this file.
+*/
+
+//when the page is ready/loaded, begin
 $(document).ready(function(){
-	// var socket = io();
-	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000');
+	// var socket = io(); <-- to run on localhost:3000
+	var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000'); // <-- to run on openshift surver
 	var connected = false;
 	var canvas = document.getElementById("agarCanvas");
 	canvas.width = window.innerWidth;
@@ -21,7 +33,7 @@ $(document).ready(function(){
 	var viewY=0;
 	var score=0;
 
-	//saves player's input name
+	//saves player's input name when the game begins, displays appropriate windows
 	function getPlayerName(){
 		$('button').prop('disabled', false);
 		$("#startScreen").show();
@@ -32,7 +44,6 @@ $(document).ready(function(){
 			socket.emit('playerReady',player);
 			$("#startScreen").hide();
 			$('#start').prop('disabled', true);
-			//$("#gameHelper").show();
 		});
 		$("#pName").keypress(function(e){
 	    if (e.which == 13){
@@ -207,7 +218,6 @@ $(document).ready(function(){
 		//foods = response.foods;
 		socket.on('death'+blobId,function(){
 			//Hide the score bar
-			//$("#gameHelper").hide();
 			$("#score>span").text('');
 			//Display the death screen
 			$("#deathScreen").show();
