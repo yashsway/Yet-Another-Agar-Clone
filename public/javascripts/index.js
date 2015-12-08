@@ -25,13 +25,14 @@ $(document).ready(function(){
 	function getPlayerName(){
 		$('button').prop('disabled', false);
 		$("#startScreen").show();
+		$("#gameHelper").show();
 		$("#start").on('click',function(){
 			var player = {name:$("#pName").val()};
 			console.log(player.name);
 			socket.emit('playerReady',player);
 			$("#startScreen").hide();
 			$('#start').prop('disabled', true);
-			$("#gameHelper").show();
+			//$("#gameHelper").show();
 		});
 		$("#pName").keypress(function(e){
 	    if (e.which == 13){
@@ -104,13 +105,14 @@ $(document).ready(function(){
 		context.strokeText(name,x,y+10);
 	}
 
-	//finds user's mouse positionon "mouseMove" event
+	//finds user's mouse position on "mouseMove" event
 	function mousePos(e){
 		var rect = canvas.getBoundingClientRect();
 		mouse.x = e.clientX - rect.left;
 		mouse.y = e.clientY - rect.top;
 	}
 
+	//for display purposes
 	function isPageHidden(){
 		return document.hidden || document.msHidden || document.webkitHidden || document.mozHidden;
 	}
@@ -205,7 +207,7 @@ $(document).ready(function(){
 		//foods = response.foods;
 		socket.on('death'+blobId,function(){
 			//Hide the score bar
-			$("#gameHelper").hide();
+			//$("#gameHelper").hide();
 			$("#score>span").text('');
 			//Display the death screen
 			$("#deathScreen").show();
@@ -227,6 +229,8 @@ $(document).ready(function(){
 		}
 	}
 
+	//function to update foods array based on info of which are new and which have been eaten
+	//so that foods may be drawn according to updated information
 	function updateFoods(foodArr, newFoodObjs, eatenFoodIds){
 		if (eatenFoodIds){
 			for (var i=foodArr.length-1; i>=0; i--){
@@ -248,7 +252,6 @@ $(document).ready(function(){
 	socket.on('update',function(response){
 		if (connected){
 			blobs = response.blobs;
-			//foods = response.foods;
 			foods = updateFoods(foods, response.newFoods, response.eatenFoods);
 			drawFrame(blobs, foods);
 			getDirection();
