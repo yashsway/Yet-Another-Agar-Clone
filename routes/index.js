@@ -9,8 +9,10 @@ module.exports.getRouter = function(io){
 	});
 	var fieldW = 2500;
 	var fieldH = 2500;
+	//------------------F6: Entity Data-------------------------------
 	var blobs = [];
 	var foods = [];
+	//------------------F6 End-------------------------------
 	//var foodAmount = (3001*3001)/10000;
 	var foodAmount = 200;
 	var foodIdCount = 0;
@@ -20,6 +22,7 @@ module.exports.getRouter = function(io){
 	var percent = 0.1;
 	// var quad = new quadtree.Quadtree(0,{x:0,y:0,width:fieldW,height:fieldH});
 
+	//------------------F7: Server Integration-------------------------------
 	io.on('connection', function(socket){
 		console.log("Blob " + blobCount + " connected");
 		var loc = generateLoc();
@@ -71,6 +74,9 @@ module.exports.getRouter = function(io){
 			}
 		});
 	});
+	//------------------F7 End-------------------------------
+
+	//------------------F5: State Calculation-------------------------------
 	var convertToRadius = function(mass){
 		return Math.floor(Math.sqrt(mass/Math.PI));
 	};
@@ -186,7 +192,9 @@ module.exports.getRouter = function(io){
 			}
 		};
 	}
+	//------------------F5 End-------------------------------
 
+	//------------------F7: Server Integration-------------------------------
 	//This is our 'game loop' implemented as a callback loop.
 	var sendData = function(){
 		var eatenFoods = checkEating();
@@ -201,4 +209,5 @@ module.exports.getRouter = function(io){
 	sendData();
 
 	return router;
+	//------------------F7 End-------------------------------
 };

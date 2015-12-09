@@ -33,6 +33,7 @@ $(document).ready(function(){
 	var viewY=0;
 	var score=0;
 
+	//------------------F4: Window Input-------------------------------
 	//saves player's input name when the game begins, displays appropriate windows
 	function getPlayerName(){
 		$('button').prop('disabled', false);
@@ -52,7 +53,9 @@ $(document).ready(function(){
 		});
 	}
 	getPlayerName();
-
+	//------------------F4 End-------------------------------
+	
+	//------------------F2: Game Drawing-------------------------------//
 	//draws the background grid for the game
 	function drawGrid(){
 		context.strokeStyle="#d3d3d3";
@@ -116,32 +119,6 @@ $(document).ready(function(){
 		context.strokeText(name,x,y+10);
 	}
 
-	//finds user's mouse position on "mouseMove" event
-	function mousePos(e){
-		var rect = canvas.getBoundingClientRect();
-		mouse.x = e.clientX - rect.left;
-		mouse.y = e.clientY - rect.top;
-	}
-
-	//for display purposes
-	function isPageHidden(){
-		return document.hidden || document.msHidden || document.webkitHidden || document.mozHidden;
-	}
-
-	//finds the distance between the player's blob and the mouse
-	//sends that distance's dx and dy components in "dir" to the backend
-	//so that it can compute the next position of the blob
-	function getDirection(e){
-		if (!isPageHidden() && alive){
-			//distance between mouse and center of canvas(since that's where blob is drawn)
-			dir.dx = mouse.x - canvW/2;
-			dir.dy = mouse.y - canvH/2;
-			var thisBlob = getBlob(blobId);
-			var newObj = {id: thisBlob.id, x: thisBlob.x, y: thisBlob.y, mass: thisBlob.mass, radius: thisBlob.radius, color: thisBlob.color, dir: dir};
-			socket.emit('objUpdate',newObj);
-		}
-	}
-
 	//draw all the players in the given array
 	function drawPlayers(players){
 		for (i = 0; i < players.length ; i++){
@@ -185,6 +162,35 @@ $(document).ready(function(){
 			drawPlayers(players);
 	    }
 	}
+	//------------------F2 End-------------------------------//
+
+	//for display purposes
+	function isPageHidden(){
+		return document.hidden || document.msHidden || document.webkitHidden || document.mozHidden;
+	}
+	//------------------F1: Game Input-------------------------------// 
+	//finds user's mouse position on "mouseMove" event
+	function mousePos(e){
+		var rect = canvas.getBoundingClientRect();
+		mouse.x = e.clientX - rect.left;
+		mouse.y = e.clientY - rect.top;
+	}
+
+	//finds the distance between the player's blob and the mouse
+	//sends that distance's dx and dy components in "dir" to the backend
+	//so that it can compute the next position of the blob
+	function getDirection(e){
+		if (!isPageHidden() && alive){
+			//distance between mouse and center of canvas(since that's where blob is drawn)
+			dir.dx = mouse.x - canvW/2;
+			dir.dy = mouse.y - canvH/2;
+			var thisBlob = getBlob(blobId);
+			var newObj = {id: thisBlob.id, x: thisBlob.x, y: thisBlob.y, mass: thisBlob.mass, radius: thisBlob.radius, color: thisBlob.color, dir: dir};
+			socket.emit('objUpdate',newObj);
+		}
+	}
+	//------------------F1 End-------------------------------//
+
 
 	function updateScore(){
 		var thisBlob = getBlob(blobId);
@@ -216,6 +222,7 @@ $(document).ready(function(){
 		blobId = response.blobId;
 		console.log(blobId);
 		//foods = response.foods;
+		//------------------F3: Window Drawing-------------------------------
 		socket.on('death'+blobId,function(){
 			//Hide the score bar
 			$("#score>span").text('');
@@ -225,6 +232,7 @@ $(document).ready(function(){
 			console.log("Looks like we died..");
 			alive = false;
 		});
+		//------------------F3 End-------------------------------
 		alive = true;
 		drawFrame(blobs);
 		window.addEventListener('mousemove', mousePos);
