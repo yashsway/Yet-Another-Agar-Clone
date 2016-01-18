@@ -1,5 +1,5 @@
 # Yet-Another-Agar-Clone
-### http://yaac-jkjones.rhcloud.com/
+### http://yaac.jkjones.me/
 
 A clone of the game Agar.io, written from scratch.
 
