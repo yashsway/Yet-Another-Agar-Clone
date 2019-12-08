@@ -12,7 +12,6 @@ The HTML and CSS files also relate to the Window modules, but the most important
 //when the page is ready/loaded, begin
 $(document).ready(function(){
     var socket = io(); // <-- to run on localhost:3000
-    // var socket = io.connect('http://yaac-jkjones.rhcloud.com:8000'); // <-- to run on openshift server
     var connected = false;
     var canvas = document.getElementById("agarCanvas");
     canvas.width = window.innerWidth;
