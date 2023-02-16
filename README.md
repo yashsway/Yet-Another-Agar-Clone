@@ -1,7 +1,10 @@
 # Yet-Another-Agar-Clone
-### http://yaac.jkjones.me/
+## Links
+The game is playable here: http://yaac.jkjones.me/  
+You can view the presentation deck we used for the project here: https://slides.com/yashsway/deck/fullscreen
 
-A clone of the game Agar.io, written from scratch.
+## What is it?
+A clone of the incredibly popular online game Agar.io, written from scratch.
 
 Built with Node.js, Express.js, Socket.io, Javascript, jQuery, Canvas (HTML5), HTML5, and CSS.
 
